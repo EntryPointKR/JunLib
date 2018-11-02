@@ -1,27 +1,15 @@
-package com.github.entrypointkr.junlib.bukkit.util;
+package com.github.entrypointkr.junlib.util;
 
-import com.github.entrypointkr.junlib.util.Converter;
 import org.apache.commons.lang.math.NumberUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 /**
- * Created by JunHyeong on 2018-10-26
+ * Created by JunHyeong on 2018-11-03
  */
 public class StringConverter {
     private final String string;
 
     public StringConverter(String string) {
         this.string = string;
-    }
-
-    public Converter<Player> player() {
-        return Converter.ofCommand(string, Bukkit::getPlayer, str -> str + " 는 온라인 플레이어가 아닙니다.");
-    }
-
-    public Converter<World> world() {
-        return Converter.ofCommand(string, Bukkit::getWorld, str -> str + " 는 존재하지 않는 월드입니다.");
     }
 
     public Converter<Number> number() {
