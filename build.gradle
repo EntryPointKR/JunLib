@@ -1,0 +1,37 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+group 'com.github.entrypointkr'
+version '0.1-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+test.testLogging.showStandardStreams = true
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+compileJava.dependsOn clean
+
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url 'http://nexus.hc.to/content/repositories/pub_releases' }
+    maven { url 'http://repo.dmulloy2.net/content/groups/public/' }
+}
+
+dependencies {
+    compile("org.spigotmc:spigot-api:1.13.1-R0.1-SNAPSHOT")
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+processResources {
+    String name = project.name
+    String mainClass = [project.group, name.toLowerCase(), 'JunLibrary'].join('.')
+    filteringCharset = 'UTF-8'
+    filter ReplaceTokens, tokens: [
+            'main' : mainClass,
+            'name'   : name,
+            'version': project.version,
+            'author' : "EntryPoint"
+    ]
+}

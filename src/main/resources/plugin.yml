@@ -1,0 +1,4 @@
+main: @main@
+name: @name@
+version: @version@
+author: @author@
