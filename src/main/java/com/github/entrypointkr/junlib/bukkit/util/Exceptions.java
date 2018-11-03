@@ -24,6 +24,11 @@ public class Exceptions {
         }
     }
 
+    public static void run(ThrowsRunnable... runnables) {
+        run(ex -> {
+        }, runnables);
+    }
+
     public static void runOrLog(Logger logger, ThrowsRunnable... runnables) {
         run(ex -> logger.log(Level.WARNING, ex, () -> "Exception was thrown"), runnables);
     }
