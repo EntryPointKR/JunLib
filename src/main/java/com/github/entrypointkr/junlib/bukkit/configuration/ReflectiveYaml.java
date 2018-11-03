@@ -1,6 +1,6 @@
 package com.github.entrypointkr.junlib.bukkit.configuration;
 
-import com.github.entrypointkr.junlib.util.Files;
+import com.github.entrypointkr.junlib.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConstructor;
 import org.bukkit.configuration.file.YamlRepresenter;
@@ -46,7 +46,7 @@ public class ReflectiveYaml {
 
     public void write(Object object, File file) {
         try {
-            Files.ensure(file);
+            FileUtils.ensure(file);
             write(object, new BufferedWriter(new FileWriter(file)));
         } catch (Exception ex) {
             Bukkit.getLogger().log(Level.WARNING, ex, () -> "Exception was thrown");
