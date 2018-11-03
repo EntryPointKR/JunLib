@@ -1,6 +1,6 @@
 package com.github.entrypointkr.junlib.bukkit.configuration;
 
-import com.github.entrypointkr.junlib.util.FileUtils;
+import com.github.entrypointkr.junlib.bukkit.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConstructor;
 import org.bukkit.configuration.file.YamlRepresenter;
@@ -37,7 +37,7 @@ public class ReflectiveYaml {
     }
 
     public <T> Optional<T> read(Plugin plugin, String fileName) {
-        return read(new File(plugin.getDataFolder(), fileName));
+        return read(FileUtils.createFile(plugin, fileName));
     }
 
     public void write(Object object, Writer writer) {

@@ -1,4 +1,6 @@
-package com.github.entrypointkr.junlib.util;
+package com.github.entrypointkr.junlib.bukkit.util;
+
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,5 +22,9 @@ public class FileUtils {
                 throw new IllegalStateException("Failed createNewFile");
             }
         }
+    }
+
+    public static File createFile(Plugin plugin, String fileName) {
+        return new File(plugin.getDataFolder(), fileName);
     }
 }
