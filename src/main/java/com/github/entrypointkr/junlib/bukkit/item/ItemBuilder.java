@@ -2,31 +2,37 @@ package com.github.entrypointkr.junlib.bukkit.item;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.function.Supplier;
 
 /**
  * Created by JunHyeong on 2018-10-29
  */
-public class ItemBuilder {
-    private final Material material;
+public class ItemBuilder implements ItemFactory {
+    private final Supplier<ItemStack> baseFactory;
 
-    public ItemBuilder(Material material) {
-        this.material = material;
+    private ItemBuilder(Supplier<ItemStack> baseFactory) {
+        this.baseFactory = baseFactory;
     }
 
+    public static ItemBuilder of(Supplier<ItemStack> factory) {
+        return new ItemBuilder(factory);
+    }
+
+    public static ItemBuilder of(ItemStack item) {
+        return of(() -> new ItemStack(item));
+    }
+
+    public static ItemBuilder of(Material material) {
+        return of(() -> new ItemStack(material));
+    }
+
+    public static ItemBuilder of(Material material, int amount) {
+        return of(() -> new ItemStack(material, amount));
+    }
+
+    @Override
     public ItemStack create() {
-        return new ItemStack(material);
-    }
-
-    public <T extends ItemMeta> ItemStack create(Class<T> metaType, ItemMetaModifier<T> modifier) {
-        ItemStack item = create();
-        T meta = metaType.cast(item.getItemMeta());
-        modifier.modify(meta);
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    public ItemStack create(ItemMetaModifier<ItemMeta> modifier) {
-        return create(ItemMeta.class, modifier);
+        return baseFactory.get();
     }
 }

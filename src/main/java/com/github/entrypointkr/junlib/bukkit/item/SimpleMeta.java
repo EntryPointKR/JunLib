@@ -28,6 +28,10 @@ public class SimpleMeta implements ItemMetaModifier<ItemMeta> {
         return this;
     }
 
+    public SimpleMeta name(String displayName) {
+        return display(displayName);
+    }
+
     public SimpleMeta lore(String... lores) {
         getLore().addAll(Arrays.asList(lores));
         return this;

@@ -104,9 +104,9 @@ public class PaginationComponent implements GUIComponent {
         int offset = getContentsSize();
         int maxPage = getMaxPage();
         String pageInfo = String.format("%s/%s", page + 1, maxPage + 1);
-        inventory.setItem(offset + 3, new ItemBuilder(Material.STONE_BUTTON)
+        inventory.setItem(offset + 3, ItemBuilder.of(Material.STONE_BUTTON)
                 .create(new SimpleMeta().display(pageInfo)));
-        inventory.setItem(offset + 5, new ItemBuilder(Material.STONE_BUTTON)
+        inventory.setItem(offset + 5, ItemBuilder.of(Material.STONE_BUTTON)
                 .create(new SimpleMeta().display(pageInfo)));
     }
 
