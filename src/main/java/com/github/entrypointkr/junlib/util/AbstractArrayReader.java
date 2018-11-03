@@ -51,7 +51,7 @@ public abstract class AbstractArrayReader<T> implements ArrayReader<T> {
 
     @Override
     public Optional<T> getOptional(int index) {
-        return index >= 0 && array.length > index
+        return index >= 0 && remain() > index
                 ? Optional.of(get(index))
                 : Optional.empty();
     }
