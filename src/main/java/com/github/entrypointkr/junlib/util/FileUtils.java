@@ -6,8 +6,8 @@ import java.io.IOException;
 /**
  * Created by JunHyeong on 2018-11-03
  */
-public class Files {
-    private Files() {
+public class FileUtils {
+    private FileUtils() {
     }
 
     public static void ensure(File file) throws IOException {
