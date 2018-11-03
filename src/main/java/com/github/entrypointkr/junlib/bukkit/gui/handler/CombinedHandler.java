@@ -15,7 +15,7 @@ public class CombinedHandler implements GUIHandler<InventoryEvent> {
 
     @Override
     public void onEvent(GUI gui, InventoryEvent e) {
-        for (GUIHandler listener : listeners) {
+        for (GUIHandler<InventoryEvent> listener : listeners) {
             listener.onEvent(gui, e);
         }
     }
