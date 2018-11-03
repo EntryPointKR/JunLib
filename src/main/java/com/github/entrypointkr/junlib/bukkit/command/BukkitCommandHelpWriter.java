@@ -4,6 +4,7 @@ import com.github.entrypointkr.junlib.bukkit.util.BukkitArrayReader;
 import com.github.entrypointkr.junlib.command.*;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +30,9 @@ public class BukkitCommandHelpWriter implements CommandHelpWriter<CommandSenderE
 
     @Override
     public void write(StringBuilder builder, ICommand<CommandSenderEx, BukkitArrayReader> from, Exception exception, Supplier<List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>>> flattedPairsSupplier, CommandSenderEx sender, String flattedArgs) {
-        builder.append(ChatColor.RED).append(sender.isOp() ? ExceptionUtils.getFullStackTrace(exception) : exception.getMessage()).append('\n');
+        if (!(exception instanceof CommandException)) {
+            builder.append(ChatColor.RED).append(sender.isOp() ? ExceptionUtils.getFullStackTrace(exception) : exception.getMessage()).append('\n');
+        }
         headerWriter.write(builder, from, exception, flattedPairsSupplier, sender, flattedArgs);
         List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>> entries = flattedPairsSupplier.get();
         if (exception instanceof CommandHelpException) {
