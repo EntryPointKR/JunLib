@@ -55,7 +55,7 @@ public class HelpableCommand<T, U extends ArrayReader<String>> implements TabCom
             if (ex.getMessage() != null) {
                 messageSender.accept(sender, ex.getMessage());
             }
-            String help = help(sender, args);
+            String help = help(sender, args, ex);
             messageSender.accept(sender, help);
             exceptionConsumer.accept(ex);
         }
@@ -66,11 +66,11 @@ public class HelpableCommand<T, U extends ArrayReader<String>> implements TabCom
         return command.tabComplete(sender, args);
     }
 
-    public String help(T sender, U args) {
+    public String help(T sender, U args, Exception ex) {
         StringBuilder prefix = new StringBuilder();
         MapCommand<T, U> finded = findMapCommand(prefix, args);
         StringBuilder builder = new StringBuilder();
-        helper.write(builder, command, () -> finded.createFlattenPairs(prefix), sender, StringUtils.join(args.getInternalArray(), ' '));
+        helper.write(builder, command, ex, () -> finded.createFlattenPairs(prefix), sender, StringUtils.join(args.getInternalArray(), ' '));
         return builder.toString();
     }
 

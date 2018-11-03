@@ -10,5 +10,5 @@ import java.util.function.Supplier;
  * Created by JunHyeong on 2018-10-22
  */
 public interface CommandHelpWriter<T, U extends ArrayReader<String>> {
-    void write(StringBuilder builder, ICommand<T, U> from, Supplier<List<Map.Entry<String, ICommand<T, U>>>> flattedPairsSupplier, T sender, String flattedArgs);
+    void write(StringBuilder builder, ICommand<T, U> from, Exception exception, Supplier<List<Map.Entry<String, ICommand<T, U>>>> flattedPairsSupplier, T sender, String flattedArgs);
 }
