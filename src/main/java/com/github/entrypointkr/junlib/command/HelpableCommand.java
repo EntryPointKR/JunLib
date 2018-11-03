@@ -52,9 +52,6 @@ public class HelpableCommand<T, U extends ArrayReader<String>> implements TabCom
             command.execute(sender, args);
         } catch (Exception ex) {
             args.reset();
-            if (ex.getMessage() != null) {
-                messageSender.accept(sender, ex.getMessage());
-            }
             String help = help(sender, args, ex);
             messageSender.accept(sender, help);
             exceptionConsumer.accept(ex);
