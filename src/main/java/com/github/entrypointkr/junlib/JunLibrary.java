@@ -19,5 +19,6 @@ public class JunLibrary extends JavaPlugin {
     public void onEnable() {
         Events.init(this);
         JunLibraryCommand.register(this);
+        new Metrics(this);
     }
 }

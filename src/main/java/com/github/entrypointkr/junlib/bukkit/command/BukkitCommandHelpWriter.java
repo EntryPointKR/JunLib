@@ -32,6 +32,8 @@ public class BukkitCommandHelpWriter implements CommandHelpWriter<CommandSenderE
     public void write(StringBuilder builder, ICommand<CommandSenderEx, BukkitArrayReader> from, Exception exception, Supplier<List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>>> flattedPairsSupplier, CommandSenderEx sender, String flattedArgs) {
         if (!(exception instanceof CommandException)) {
             builder.append(ChatColor.RED).append(sender.isOp() ? ExceptionUtils.getFullStackTrace(exception) : exception.getMessage()).append('\n');
+        } else {
+            builder.append(ChatColor.RED).append(exception.getMessage()).append('\n');
         }
         headerWriter.write(builder, from, exception, flattedPairsSupplier, sender, flattedArgs);
         List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>> entries = flattedPairsSupplier.get();

@@ -12,8 +12,10 @@ public interface ItemFactory {
     default <T extends ItemMeta> ItemStack create(Class<T> metaType, ItemMetaModifier<T> modifier) {
         ItemStack item = create();
         T meta = metaType.cast(item.getItemMeta());
-        modifier.modify(meta);
-        item.setItemMeta(meta);
+        if (meta != null) {
+            modifier.modify(meta);
+            item.setItemMeta(meta);
+        }
         return item;
     }
 
