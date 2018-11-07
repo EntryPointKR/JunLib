@@ -8,7 +8,14 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -40,8 +47,7 @@ public class Events {
         getListeners(priority).addAll(Arrays.asList(listeners));
     }
 
-    @SafeVarargs
-    public static void removeListener(EventListener<Event>... listeners) {
+    public static void removeListener(EventListener... listeners) {
         for (Set<EventListener<Event>> value : LISTENERS.values()) {
             value.removeAll(Arrays.asList(listeners));
         }

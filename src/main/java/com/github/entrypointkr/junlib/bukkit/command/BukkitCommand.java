@@ -1,6 +1,7 @@
 package com.github.entrypointkr.junlib.bukkit.command;
 
 import com.github.entrypointkr.junlib.bukkit.util.BukkitArrayReader;
+import com.github.entrypointkr.junlib.bukkit.util.Bukkits;
 import com.github.entrypointkr.junlib.command.PermissibleCommand;
 
 /**
@@ -15,5 +16,10 @@ public interface BukkitCommand extends PermissibleCommand<CommandSenderEx, Bukki
     default boolean checkPermission(CommandSenderEx sender) {
         String permission = permission();
         return permission == null || sender.hasPermission(permission);
+    }
+
+    @Override
+    default void onPermissionDenied(CommandSenderEx sender, BukkitArrayReader args) {
+        sender.sendMessage(Bukkits.colorize(String.format("&f권한 &e%s &f가 없습니다.", permission())));
     }
 }

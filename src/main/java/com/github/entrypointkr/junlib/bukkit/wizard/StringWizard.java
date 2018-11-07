@@ -1,6 +1,7 @@
 package com.github.entrypointkr.junlib.bukkit.wizard;
 
 import com.github.entrypointkr.junlib.bukkit.util.BukkitStringConverter;
+import com.github.entrypointkr.junlib.wizard.Wizard;
 
 import java.util.function.Consumer;
 

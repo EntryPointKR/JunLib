@@ -19,7 +19,7 @@ public class ClickHandler implements GUIHandler<InventoryEvent> {
     }
 
     public ClickHandler() {
-        this(GUI.emptyListener());
+        this(EmptyHandler.get());
     }
 
     @Override

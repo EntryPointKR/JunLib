@@ -3,6 +3,7 @@ package com.github.entrypointkr.junlib;
 import com.github.entrypointkr.junlib.bukkit.command.CommandManager;
 import com.github.entrypointkr.junlib.bukkit.event.Events;
 import com.github.entrypointkr.junlib.bukkit.util.Bukkits;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -10,6 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class JunLibrary extends JavaPlugin {
     private static final CommandManager COMMAND_MANAGER = new CommandManager(Bukkits.getMainCommandMap());
+
+    public static JunLibrary getPlugin() {
+        return (JunLibrary) Bukkit.getPluginManager().getPlugin("JunLib");
+    }
 
     public static CommandManager getCommandManager() {
         return COMMAND_MANAGER;

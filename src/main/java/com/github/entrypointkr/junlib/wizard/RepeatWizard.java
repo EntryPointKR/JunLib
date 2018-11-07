@@ -1,4 +1,4 @@
-package com.github.entrypointkr.junlib.bukkit.wizard;
+package com.github.entrypointkr.junlib.wizard;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;

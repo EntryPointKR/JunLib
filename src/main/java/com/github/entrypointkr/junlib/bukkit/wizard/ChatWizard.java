@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * Created by JunHyeong on 2018-11-02
  */
-public class ChatWizard extends EntityWizard<String, HumanEntity> implements StringWizard {
+public class ChatWizard extends BukkitWizard<String, HumanEntity> implements StringWizard {
     private final boolean cancel;
 
     public ChatWizard(EventPriority priority, HumanEntity entity, boolean cancel) {
@@ -35,7 +35,7 @@ public class ChatWizard extends EntityWizard<String, HumanEntity> implements Str
     protected void process(Event event, Consumer<String> resultCallback) {
         if (event instanceof AsyncPlayerChatEvent) {
             AsyncPlayerChatEvent e = ((AsyncPlayerChatEvent) event);
-            if (e.getPlayer().equals(getEntity())) {
+            if (e.getPlayer().equals(getPlayer())) {
                 resultCallback.accept(e.getMessage());
                 if (cancel) {
                     e.setCancelled(true);

@@ -59,15 +59,16 @@ public class PaginationComponent implements GUIComponent {
         preHandler.onEvent(gui, e);
         if (e instanceof InventoryClickEvent) {
             InventoryClickEvent event = ((InventoryClickEvent) e);
+            Inventory inventory = event.getView().getTopInventory();
             if (event.getAction() != InventoryAction.NOTHING) {
                 int rawSlot = event.getRawSlot();
                 int size = getContentsSize();
                 if (rawSlot == size + 3) {
                     setPage(page - 1);
-                    gui.open(event.getWhoClicked());
+                    inventory.setContents(create(event.getWhoClicked()).getContents());
                 } else if (rawSlot == size + 5) {
                     setPage(page + 1);
-                    gui.open(event.getWhoClicked());
+                    inventory.setContents(create(event.getWhoClicked()).getContents());
                 } else if (rawSlot < size) {
                     int adjust = getAdjustSlot(size, rawSlot);
                     clickHandler.notify(adjust, gui, event);

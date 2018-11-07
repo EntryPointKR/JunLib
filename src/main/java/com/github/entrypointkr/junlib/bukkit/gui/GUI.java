@@ -1,9 +1,13 @@
 package com.github.entrypointkr.junlib.bukkit.gui;
 
+import com.github.entrypointkr.junlib.JunLibrary;
 import com.github.entrypointkr.junlib.bukkit.event.EventListener;
 import com.github.entrypointkr.junlib.bukkit.event.Events;
+import com.github.entrypointkr.junlib.bukkit.event.listener.GUIModal;
+import com.github.entrypointkr.junlib.bukkit.event.listener.GUINotifier;
 import com.github.entrypointkr.junlib.bukkit.gui.handler.GUIHandler;
 import com.github.entrypointkr.junlib.bukkit.inventory.InventoryFactory;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -14,24 +18,19 @@ import org.bukkit.inventory.Inventory;
 /**
  * Created by JunHyeong on 2018-10-28
  */
-public final class GUI implements GUIHandler {
-    private static final GUIHandler EMPTY_LISTENER = (gui, event) -> {
-    };
+public final class GUI implements GUINotifier {
+    private final HumanEntity owner;
     private final InventoryFactory factory;
     private final GUIHandler<InventoryEvent> handler;
 
-    public GUI(InventoryFactory factory, GUIHandler<InventoryEvent> handler) {
+    public GUI(HumanEntity owner, InventoryFactory factory, GUIHandler<InventoryEvent> handler) {
+        this.owner = owner;
         this.factory = factory;
         this.handler = handler;
     }
 
-    public GUI(GUIComponent component) {
-        this(component, component);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T extends InventoryEvent> GUIHandler<T> emptyListener() {
-        return ((GUIHandler<T>) EMPTY_LISTENER);
+    public GUI(HumanEntity owner, GUIComponent component) {
+        this(owner, component, component);
     }
 
     public static boolean isSimilar(Inventory a, Inventory b) {
@@ -40,29 +39,49 @@ public final class GUI implements GUIHandler {
                 && b.getTitle().equals(b.getTitle());
     }
 
-    public void open(HumanEntity human) {
-        Inventory created = factory.create(human);
-        Inventory opened = human.getOpenInventory().getTopInventory();
-        if (isSimilar(created, opened)) {
-            opened.setContents(created.getContents());
-        } else {
-            human.openInventory(created);
-            Events.registerListener(EventPriority.MONITOR, new Notifier());
-        }
+    public void open(GUINotifier eventNotifier) {
+        Bukkit.getScheduler().runTask(JunLibrary.getPlugin(), () -> {
+            Inventory created = factory.create(owner);
+            owner.openInventory(created);
+            Events.registerListener(EventPriority.MONITOR, new BootstrapNotifier(eventNotifier));
+        });
+    }
+
+    public void open() {
+        open(this);
+    }
+
+    public void openModal(GUI parent, GUINotifier notifier) {
+        open(new GUIModal(this, parent, notifier));
+    }
+
+    public void openModal(GUI parent) {
+        openModal(parent, parent);
     }
 
     @Override
-    public void onEvent(GUI gui, InventoryEvent e) {
-        handler.onEvent(gui, e);
+    public void onEvent(InventoryEvent event) {
+        if (event != null) {
+            handler.onEvent(this, event);
+        }
     }
 
-    class Notifier implements EventListener<Event> {
+    class BootstrapNotifier implements EventListener<Event> {
+        private final EventListener<InventoryEvent> notifier;
+
+        BootstrapNotifier(EventListener<InventoryEvent> notifier) {
+            this.notifier = notifier;
+        }
+
         @Override
         public void onEvent(Event event) {
             if (event instanceof InventoryEvent) {
-                GUI.this.onEvent(GUI.this, ((InventoryEvent) event));
-                if (event instanceof InventoryCloseEvent) {
-                    Events.removeListener(this);
+                InventoryEvent e = ((InventoryEvent) event);
+                if (owner.equals(e.getView().getPlayer())) {
+                    notifier.onEvent(e);
+                    if (e instanceof InventoryCloseEvent) {
+                        Events.removeListener(this);
+                    }
                 }
             }
         }

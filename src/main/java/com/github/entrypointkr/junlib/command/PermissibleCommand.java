@@ -12,10 +12,16 @@ public interface PermissibleCommand<T, U extends ArrayReader<String>> extends De
 
     void doExecute(T sender, U args);
 
+    default void onPermissionDenied(T sender, U args) {
+        // Hook
+    }
+
     @Override
     default void execute(T sender, U args) {
         if (checkPermission(sender)) {
             doExecute(sender, args);
+        } else {
+            onPermissionDenied(sender, args);
         }
     }
 }

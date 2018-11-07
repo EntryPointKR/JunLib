@@ -1,7 +1,11 @@
 package com.github.entrypointkr.junlib.bukkit.command;
 
 import com.github.entrypointkr.junlib.bukkit.util.BukkitArrayReader;
-import com.github.entrypointkr.junlib.command.*;
+import com.github.entrypointkr.junlib.command.CommandHelpException;
+import com.github.entrypointkr.junlib.command.CommandHelpWriter;
+import com.github.entrypointkr.junlib.command.DetailedCommand;
+import com.github.entrypointkr.junlib.command.ICommand;
+import com.github.entrypointkr.junlib.command.Usage;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandException;
@@ -24,17 +28,19 @@ public class BukkitCommandHelpWriter implements CommandHelpWriter<CommandSenderE
     }
 
     public BukkitCommandHelpWriter() {
-        this((builder, from, exception, flattedPairsSupplier, sender, flattedArgs) ->
-                builder.append(ChatColor.GREEN).append("명령어 도움말"));
+        this((builder, from, exception, flattedPairsSupplier, sender, flattedArgs) -> {
+            if (!(exception instanceof CommandException)) {
+                builder.append(ChatColor.RED).append(sender.isOp() ? ExceptionUtils.getFullStackTrace(exception) : exception.getMessage()).append('\n');
+            } else if (exception.getMessage() != null) {
+                builder.append(ChatColor.RED).append(exception.getMessage()).append('\n');
+            } else {
+                builder.append(ChatColor.GREEN).append("명령어 도움말").append('\n');
+            }
+        });
     }
 
     @Override
     public void write(StringBuilder builder, ICommand<CommandSenderEx, BukkitArrayReader> from, Exception exception, Supplier<List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>>> flattedPairsSupplier, CommandSenderEx sender, String flattedArgs) {
-        if (!(exception instanceof CommandException)) {
-            builder.append(ChatColor.RED).append(sender.isOp() ? ExceptionUtils.getFullStackTrace(exception) : exception.getMessage()).append('\n');
-        } else {
-            builder.append(ChatColor.RED).append(exception.getMessage()).append('\n');
-        }
         headerWriter.write(builder, from, exception, flattedPairsSupplier, sender, flattedArgs);
         List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>> entries = flattedPairsSupplier.get();
         if (exception instanceof CommandHelpException) {

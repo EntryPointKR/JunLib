@@ -1,10 +1,12 @@
 package com.github.entrypointkr.junlib.bukkit.item;
 
+import com.github.entrypointkr.junlib.bukkit.util.Bukkits;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JunHyeong on 2018-10-31
@@ -24,7 +26,7 @@ public class SimpleMeta implements ItemMetaModifier<ItemMeta> {
     }
 
     public SimpleMeta display(String displayName) {
-        this.displayName = displayName;
+        this.displayName = Bukkits.colorize(displayName);
         return this;
     }
 
@@ -33,7 +35,7 @@ public class SimpleMeta implements ItemMetaModifier<ItemMeta> {
     }
 
     public SimpleMeta lore(String... lores) {
-        getLore().addAll(Arrays.asList(lores));
+        getLore().addAll(Arrays.stream(lores).map(Bukkits::colorize).collect(Collectors.toList()));
         return this;
     }
 
