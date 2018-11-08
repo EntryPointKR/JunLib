@@ -30,11 +30,11 @@ public class BukkitCommandHelpWriter implements CommandHelpWriter<CommandSenderE
     public BukkitCommandHelpWriter() {
         this((builder, from, exception, flattedPairsSupplier, sender, flattedArgs) -> {
             if (!(exception instanceof CommandException)) {
-                builder.append(ChatColor.RED).append(sender.isOp() ? ExceptionUtils.getFullStackTrace(exception) : exception.getMessage()).append('\n');
+                builder.append(ChatColor.RED).append(sender.isOp() ? ExceptionUtils.getFullStackTrace(exception) : exception.getMessage());
             } else if (exception.getMessage() != null) {
-                builder.append(ChatColor.RED).append(exception.getMessage()).append('\n');
+                builder.append(ChatColor.RED).append(exception.getMessage());
             } else {
-                builder.append(ChatColor.GREEN).append("명령어 도움말").append('\n');
+                builder.append(ChatColor.GREEN).append("명령어 도움말");
             }
         });
     }
@@ -64,7 +64,7 @@ public class BukkitCommandHelpWriter implements CommandHelpWriter<CommandSenderE
             if (builder.length() > 0) {
                 builder.append('\n');
             }
-            builder.append(ChatColor.WHITE).append(" /").append(argument);
+            builder.append(ChatColor.WHITE).append("  /").append(argument);
             writeCommand(builder, command);
         }
     }
