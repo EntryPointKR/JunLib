@@ -22,6 +22,6 @@ public class LocationWrapper {
     }
 
     public Position toPosition() {
-        return Position.ofFloor(location.getX(), location.getZ());
+        return Position.of(location.getX(), location.getZ());
     }
 }

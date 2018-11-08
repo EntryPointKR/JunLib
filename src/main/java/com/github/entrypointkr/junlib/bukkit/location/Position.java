@@ -41,6 +41,10 @@ public class Position implements ConfigurationSerializable {
         return z;
     }
 
+    public Position toFloor() {
+        return of(Location.locToBlock(x), Location.locToBlock(z));
+    }
+
     public Position(Map<String, Object> map) {
         this(((double) map.get("x")), ((double) map.get("z")));
     }

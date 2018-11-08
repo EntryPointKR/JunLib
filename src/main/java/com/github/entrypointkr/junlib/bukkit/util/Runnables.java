@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 /**
  * Created by JunHyeong on 2018-11-03
  */
-public class Exceptions {
-    private Exceptions() {
+public class Runnables {
+    private Runnables() {
     }
 
     public static void run(Consumer<Exception> consumer, ThrowsRunnable... runnables) {

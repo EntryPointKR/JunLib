@@ -40,7 +40,7 @@ public class Region implements ConfigurationSerializable {
 
     public static Region of(Location locA, Location locB) {
         Validate.isTrue(locA.getWorld().equals(locB.getWorld()));
-        return of(locA.getWorld().getName(), LocationWrapper.of(locA).toPosition(), LocationWrapper.of(locB).toPosition());
+        return of(locA.getWorld().getName(), LocationWrapper.of(locA).toPosition().toFloor(), LocationWrapper.of(locB).toPosition().toFloor());
     }
 
     public boolean isIn(Entity entity) {
