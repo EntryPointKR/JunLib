@@ -42,12 +42,6 @@ public final class GUI {
         this(owner, component, JunLibrary.getPlugin());
     }
 
-    public static boolean isSimilar(Inventory a, Inventory b) {
-        return a == b || a != null && b != null && a.getSize() == b.getSize()
-                && a.getType() == b.getType()
-                && b.getTitle().equals(b.getTitle());
-    }
-
     public void open() {
         Bukkit.getScheduler().runTask(plugin, () -> {
             Inventory created = factory.create(owner);
