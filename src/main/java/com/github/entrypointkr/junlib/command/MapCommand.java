@@ -3,9 +3,9 @@ package com.github.entrypointkr.junlib.command;
 import com.github.entrypointkr.junlib.bukkit.command.CommandSenderEx;
 import com.github.entrypointkr.junlib.bukkit.util.BukkitArrayReader;
 import com.github.entrypointkr.junlib.util.ArrayReader;
+import com.github.entrypointkr.junlib.util.Pair;
 import org.bukkit.command.CommandException;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -129,13 +129,13 @@ public class MapCommand<T, U extends ArrayReader<String>> implements TabComplete
         return size;
     }
 
-    public List<Map.Entry<String, ICommand<T, U>>> createFlattenPairs(StringBuilder prefixBuilder) {
-        List<Map.Entry<String, ICommand<T, U>>> list = new ArrayList<>(getSize());
-        forEach(prefixBuilder, (prefix, command) -> list.add(new AbstractMap.SimpleImmutableEntry<>(prefix.toString(), command)));
+    public List<Pair<String, ICommand<T, U>>> createFlattenPairs(StringBuilder prefixBuilder) {
+        List<Pair<String, ICommand<T, U>>> list = new ArrayList<>(getSize());
+        forEach(prefixBuilder, (prefix, command) -> list.add(new Pair<>(prefix.toString(), command)));
         return list;
     }
 
-    public List<Map.Entry<String, ICommand<T, U>>> createFlattenPairs() {
+    public List<Pair<String, ICommand<T, U>>> createFlattenPairs() {
         return createFlattenPairs(new StringBuilder());
     }
 }
