@@ -18,7 +18,7 @@ public class ItemWrapper {
         this.item = item;
     }
 
-    public static ItemWrapper wrap(ItemStack item) {
+    public static ItemWrapper of(ItemStack item) {
         return new ItemWrapper(item);
     }
 

@@ -18,12 +18,12 @@ public class InventoryWrapper {
         this.inventory = inventory;
     }
 
-    public static InventoryWrapper wrap(Inventory inventory) {
+    public static InventoryWrapper of(Inventory inventory) {
         return new InventoryWrapper(inventory);
     }
 
-    public static InventoryWrapper wrap(InventoryHolder holder) {
-        return wrap(holder.getInventory());
+    public static InventoryWrapper of(InventoryHolder holder) {
+        return of(holder.getInventory());
     }
 
     public int hasSpace(ItemStack item) {
