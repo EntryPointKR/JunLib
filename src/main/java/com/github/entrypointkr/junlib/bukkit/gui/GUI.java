@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Created by JunHyeong on 2018-10-28
@@ -20,15 +21,25 @@ public final class GUI {
     private final HumanEntity owner;
     private final InventoryFactory factory;
     private final GUIHandler<InventoryEvent> handler;
+    private final Plugin plugin;
 
-    public GUI(HumanEntity owner, InventoryFactory factory, GUIHandler<InventoryEvent> handler) {
+    public GUI(HumanEntity owner, InventoryFactory factory, GUIHandler<InventoryEvent> handler, Plugin plugin) {
         this.owner = owner;
         this.factory = factory;
         this.handler = handler;
+        this.plugin = plugin;
+    }
+
+    public GUI(HumanEntity owner, InventoryFactory factory, GUIHandler<InventoryEvent> handler) {
+        this(owner, factory, handler, JunLibrary.getPlugin());
+    }
+
+    public GUI(HumanEntity owner, GUIComponent component, Plugin plugin) {
+        this(owner, component, component, plugin);
     }
 
     public GUI(HumanEntity owner, GUIComponent component) {
-        this(owner, component, component);
+        this(owner, component, JunLibrary.getPlugin());
     }
 
     public static boolean isSimilar(Inventory a, Inventory b) {
@@ -38,7 +49,7 @@ public final class GUI {
     }
 
     public void open() {
-        Bukkit.getScheduler().runTask(JunLibrary.getPlugin(), () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             Inventory created = factory.create(owner);
             owner.openInventory(created);
             Events.registerListener(EventPriority.MONITOR, new Notifier(handler));
