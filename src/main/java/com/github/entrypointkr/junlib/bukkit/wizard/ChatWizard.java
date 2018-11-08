@@ -1,7 +1,6 @@
 package com.github.entrypointkr.junlib.bukkit.wizard;
 
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -10,12 +9,9 @@ import java.util.function.Consumer;
 /**
  * Created by JunHyeong on 2018-11-02
  */
-public class ChatWizard extends BukkitWizard<String, HumanEntity> implements StringWizard {
-    private final boolean cancel;
-
+public class ChatWizard extends BukkitWizard<String, AsyncPlayerChatEvent, HumanEntity> implements StringWizard {
     public ChatWizard(EventPriority priority, HumanEntity entity, boolean cancel) {
-        super(priority, entity);
-        this.cancel = cancel;
+        super(priority, AsyncPlayerChatEvent.class, entity, cancel);
     }
 
     public ChatWizard(EventPriority priority, HumanEntity entity) {
@@ -23,8 +19,7 @@ public class ChatWizard extends BukkitWizard<String, HumanEntity> implements Str
     }
 
     public ChatWizard(HumanEntity entity, boolean cancel) {
-        super(entity);
-        this.cancel = cancel;
+        this(EventPriority.HIGHEST, entity, cancel);
     }
 
     public ChatWizard(HumanEntity entity) {
@@ -32,15 +27,7 @@ public class ChatWizard extends BukkitWizard<String, HumanEntity> implements Str
     }
 
     @Override
-    protected void process(Event event, Consumer<String> resultCallback) {
-        if (event instanceof AsyncPlayerChatEvent) {
-            AsyncPlayerChatEvent e = ((AsyncPlayerChatEvent) event);
-            if (e.getPlayer().equals(getPlayer())) {
-                resultCallback.accept(e.getMessage());
-                if (cancel) {
-                    e.setCancelled(true);
-                }
-            }
-        }
+    protected void process(AsyncPlayerChatEvent event, Consumer<String> resultCallback) {
+        resultCallback.accept(event.getMessage());
     }
 }
