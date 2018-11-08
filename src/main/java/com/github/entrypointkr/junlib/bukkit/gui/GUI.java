@@ -3,8 +3,6 @@ package com.github.entrypointkr.junlib.bukkit.gui;
 import com.github.entrypointkr.junlib.JunLibrary;
 import com.github.entrypointkr.junlib.bukkit.event.EventListener;
 import com.github.entrypointkr.junlib.bukkit.event.Events;
-import com.github.entrypointkr.junlib.bukkit.event.listener.GUIModal;
-import com.github.entrypointkr.junlib.bukkit.event.listener.GUINotifier;
 import com.github.entrypointkr.junlib.bukkit.gui.handler.GUIHandler;
 import com.github.entrypointkr.junlib.bukkit.inventory.InventoryFactory;
 import org.bukkit.Bukkit;
@@ -18,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 /**
  * Created by JunHyeong on 2018-10-28
  */
-public final class GUI implements GUINotifier {
+public final class GUI {
     private final HumanEntity owner;
     private final InventoryFactory factory;
     private final GUIHandler<InventoryEvent> handler;
@@ -39,38 +37,19 @@ public final class GUI implements GUINotifier {
                 && b.getTitle().equals(b.getTitle());
     }
 
-    public void open(GUINotifier eventNotifier) {
+    public void open() {
         Bukkit.getScheduler().runTask(JunLibrary.getPlugin(), () -> {
             Inventory created = factory.create(owner);
             owner.openInventory(created);
-            Events.registerListener(EventPriority.MONITOR, new BootstrapNotifier(eventNotifier));
+            Events.registerListener(EventPriority.MONITOR, new Notifier(handler));
         });
     }
 
-    public void open() {
-        open(this);
-    }
+    class Notifier implements EventListener<Event> {
+        private final GUIHandler<InventoryEvent> handler;
 
-    public void openModal(GUI parent, GUINotifier notifier) {
-        open(new GUIModal(this, parent, notifier));
-    }
-
-    public void openModal(GUI parent) {
-        openModal(parent, parent);
-    }
-
-    @Override
-    public void onEvent(InventoryEvent event) {
-        if (event != null) {
-            handler.onEvent(this, event);
-        }
-    }
-
-    class BootstrapNotifier implements EventListener<Event> {
-        private final EventListener<InventoryEvent> notifier;
-
-        BootstrapNotifier(EventListener<InventoryEvent> notifier) {
-            this.notifier = notifier;
+        Notifier(GUIHandler<InventoryEvent> handler) {
+            this.handler = handler;
         }
 
         @Override
@@ -78,7 +57,7 @@ public final class GUI implements GUINotifier {
             if (event instanceof InventoryEvent) {
                 InventoryEvent e = ((InventoryEvent) event);
                 if (owner.equals(e.getView().getPlayer())) {
-                    notifier.onEvent(e);
+                    handler.onEvent(GUI.this, e);
                     if (e instanceof InventoryCloseEvent) {
                         Events.removeListener(this);
                     }

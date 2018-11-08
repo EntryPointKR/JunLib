@@ -9,12 +9,12 @@ import org.bukkit.event.inventory.InventoryEvent;
 public class EmptyHandler implements GUIHandler<InventoryEvent> {
     private static final GUIHandler<InventoryEvent> INSTANCE = new EmptyHandler();
 
+    private EmptyHandler() {
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends InventoryEvent> GUIHandler<T> get() {
         return ((GUIHandler<T>) INSTANCE);
-    }
-
-    private EmptyHandler() {
     }
 
     @Override

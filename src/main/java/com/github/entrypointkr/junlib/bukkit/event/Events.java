@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by JunHyeong on 2018-10-29
  */
 public class Events {
-    private static final Map<EventPriority, Set<EventListener<Event>>> LISTENERS = Collections.synchronizedMap(new EnumMap<>(EventPriority.class));
+    private static final Map<EventPriority, Set<EventListener<Event>>> listeners = Collections.synchronizedMap(new EnumMap<>(EventPriority.class));
 
     @SuppressWarnings("unchecked")
     public static void init(Plugin plugin) {
@@ -39,7 +39,7 @@ public class Events {
     }
 
     public static Set<EventListener<Event>> getListeners(EventPriority priority) {
-        return LISTENERS.computeIfAbsent(priority, k -> Collections.newSetFromMap(new ConcurrentHashMap<>()));
+        return listeners.computeIfAbsent(priority, k -> Collections.newSetFromMap(new ConcurrentHashMap<>()));
     }
 
     @SafeVarargs
@@ -48,7 +48,7 @@ public class Events {
     }
 
     public static void removeListener(EventListener... listeners) {
-        for (Set<EventListener<Event>> value : LISTENERS.values()) {
+        for (Set<EventListener<Event>> value : Events.listeners.values()) {
             value.removeAll(Arrays.asList(listeners));
         }
     }

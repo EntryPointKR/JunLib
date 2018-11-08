@@ -1,5 +1,7 @@
 package com.github.entrypointkr.junlib.bukkit.event.listener;
 
+import com.github.entrypointkr.junlib.bukkit.gui.GUI;
+import com.github.entrypointkr.junlib.bukkit.gui.handler.GUIHandler;
 import org.bukkit.event.inventory.InventoryEvent;
 
 import java.util.Arrays;
@@ -9,12 +11,12 @@ import java.util.Set;
 /**
  * Created by JunHyeong on 2018-11-07
  */
-public class EventSkipper implements GUINotifier {
-    private final GUINotifier listener;
+public class EventSkipper implements GUIHandler<InventoryEvent> {
+    private final GUIHandler<InventoryEvent> handler;
     private final Set<Class> skips = new HashSet<>();
 
-    public EventSkipper(GUINotifier listener) {
-        this.listener = listener;
+    public EventSkipper(GUIHandler<InventoryEvent> handler) {
+        this.handler = handler;
     }
 
     public EventSkipper add(Class... skips) {
@@ -28,9 +30,9 @@ public class EventSkipper implements GUINotifier {
     }
 
     @Override
-    public void onEvent(InventoryEvent event) {
-        if (!skips.remove(event.getClass())) {
-            listener.onEvent(event);
+    public void onEvent(GUI gui, InventoryEvent e) {
+        if (!skips.remove(e.getClass())) {
+            handler.onEvent(gui, e);
         }
     }
 }

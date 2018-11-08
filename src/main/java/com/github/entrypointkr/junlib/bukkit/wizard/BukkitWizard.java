@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * Created by JunHyeong on 2018-11-02
  */
 public abstract class BukkitWizard<T, H extends HumanEntity> implements Wizard<T> {
-    private static final Map<String, EventListener<Event>> NOTIFIER_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, EventListener<Event>> notifierMap = new ConcurrentHashMap<>();
     private final EventPriority priority;
     private final H human;
 
@@ -36,11 +36,11 @@ public abstract class BukkitWizard<T, H extends HumanEntity> implements Wizard<T
                 process(event, data -> {
                     consumer.accept(data);
                     Events.removeListener(this);
-                    NOTIFIER_MAP.remove(getPlayer().getName());
+                    notifierMap.remove(getPlayer().getName());
                 });
             }
         };
-        EventListener<Event> prev = NOTIFIER_MAP.put(getPlayer().getName(), notifier);
+        EventListener<Event> prev = notifierMap.put(getPlayer().getName(), notifier);
         if (prev != null) {
             Events.removeListener(prev);
         }

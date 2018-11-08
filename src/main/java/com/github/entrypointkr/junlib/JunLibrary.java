@@ -10,14 +10,14 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Created by JunHyeong on 2018-10-14
  */
 public class JunLibrary extends JavaPlugin {
-    private static final CommandManager COMMAND_MANAGER = new CommandManager(Bukkits.getMainCommandMap());
+    private static final CommandManager commandManager = new CommandManager(Bukkits.getMainCommandMap());
 
     public static JunLibrary getPlugin() {
         return (JunLibrary) Bukkit.getPluginManager().getPlugin("JunLib");
     }
 
     public static CommandManager getCommandManager() {
-        return COMMAND_MANAGER;
+        return commandManager;
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.github.entrypointkr.junlib;
 import com.github.entrypointkr.junlib.bukkit.command.BukkitCommand;
 import com.github.entrypointkr.junlib.bukkit.command.CommandSenderEx;
 import com.github.entrypointkr.junlib.bukkit.event.listener.EventSkipper;
-import com.github.entrypointkr.junlib.bukkit.event.listener.GUIModal;
+import com.github.entrypointkr.junlib.bukkit.event.listener.GUIParent;
 import com.github.entrypointkr.junlib.bukkit.gui.GUI;
 import com.github.entrypointkr.junlib.bukkit.gui.component.PaginationComponent;
 import com.github.entrypointkr.junlib.bukkit.gui.handler.CancelHandler;
@@ -127,18 +127,18 @@ class JunLibraryCommand {
                     ClickHandler clickHandler = new ClickHandler();
                     InventoryBuilder builder = InventoryBuilder.ofChest("JunLibrary Pagination Sub Demo", 3)
                             .set(1, 4, item);
-                    GUI gui = new GUI(player, builder, new CombinedHandler().add(CancelHandler.TOP, clickHandler));
-                    EventSkipper notifier = new EventSkipper(new GUIModal(gui, _gui));
+                    EventSkipper skipper = new EventSkipper(new GUIParent(new CombinedHandler().add(CancelHandler.TOP, clickHandler), _gui));
+                    GUI gui = new GUI(player, builder, skipper);
                     clickHandler.put(1, 4, (__gui, _e) -> {
-                        notifier.add(InventoryCloseEvent.class);
+                        skipper.add(InventoryCloseEvent.class);
                         player.closeInventory();
                         new ChatWizard(player).run(input -> {
                             player.sendMessage("Your input: " + input);
-                            gui.open(notifier);
+                            gui.open();
                         });
                         player.sendMessage("Enter your input");
                     });
-                    gui.open(notifier);
+                    gui.open();
                 }, i);
             }
             new GUI(player, new PaginationComponent(
