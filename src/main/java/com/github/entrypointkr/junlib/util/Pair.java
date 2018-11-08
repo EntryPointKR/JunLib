@@ -4,8 +4,8 @@ package com.github.entrypointkr.junlib.util;
  * Created by JunHyeong on 2018-11-08
  */
 public class Pair<A, B> {
-    private final A first;
-    private final B second;
+    private A first;
+    private B second;
 
     public Pair(A first, B second) {
         this.first = first;
@@ -16,7 +16,15 @@ public class Pair<A, B> {
         return first;
     }
 
+    public void setFirst(A first) {
+        this.first = first;
+    }
+
     public B getSecond() {
         return second;
+    }
+
+    public void setSecond(B second) {
+        this.second = second;
     }
 }
