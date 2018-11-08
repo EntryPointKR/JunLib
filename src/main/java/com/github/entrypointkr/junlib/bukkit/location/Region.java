@@ -43,13 +43,16 @@ public class Region implements ConfigurationSerializable {
         return of(locA.getWorld().getName(), LocationWrapper.of(locA).toPosition().toFloor(), LocationWrapper.of(locB).toPosition().toFloor());
     }
 
-    public boolean isIn(Entity entity) {
-        Location loc = entity.getLocation();
+    public boolean isIn(Location loc) {
         double x = loc.getBlockX();
         double z = loc.getBlockZ();
         return world.equals(loc.getWorld().getName())
                 && x >= min.getX() && x <= max.getX()
                 && z >= min.getZ() && z <= max.getZ();
+    }
+
+    public boolean isIn(Entity entity) {
+        return isIn(entity.getLocation());
     }
 
     public Region(Map<String, Object> map) {
