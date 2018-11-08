@@ -6,13 +6,13 @@ import com.github.entrypointkr.junlib.command.CommandHelpWriter;
 import com.github.entrypointkr.junlib.command.DetailedCommand;
 import com.github.entrypointkr.junlib.command.ICommand;
 import com.github.entrypointkr.junlib.command.Usage;
+import com.github.entrypointkr.junlib.util.Pair;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandException;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -40,14 +40,14 @@ public class BukkitCommandHelpWriter implements CommandHelpWriter<CommandSenderE
     }
 
     @Override
-    public void write(StringBuilder builder, ICommand<CommandSenderEx, BukkitArrayReader> from, Exception exception, Supplier<List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>>> flattedPairsSupplier, CommandSenderEx sender, String flattedArgs) {
+    public void write(StringBuilder builder, ICommand<CommandSenderEx, BukkitArrayReader> from, Exception exception, Supplier<List<Pair<String, ICommand<CommandSenderEx, BukkitArrayReader>>>> flattedPairsSupplier, CommandSenderEx sender, String flattedArgs) {
         headerWriter.write(builder, from, exception, flattedPairsSupplier, sender, flattedArgs);
-        List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>> entries = flattedPairsSupplier.get();
+        List<Pair<String, ICommand<CommandSenderEx, BukkitArrayReader>>> entries = flattedPairsSupplier.get();
         if (exception instanceof CommandHelpException) {
             CommandHelpException helpException = ((CommandHelpException) exception);
             if (!helpException.isFullHelpRequire()) {
-                List<Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>>> formated = entries.stream()
-                        .filter(entry -> entry.getKey().startsWith(flattedArgs))
+                List<Pair<String, ICommand<CommandSenderEx, BukkitArrayReader>>> formated = entries.stream()
+                        .filter(entry -> entry.getFirst().startsWith(flattedArgs))
                         .collect(Collectors.toList());
                 if (!formated.isEmpty()) {
                     entries = formated;
@@ -55,9 +55,9 @@ public class BukkitCommandHelpWriter implements CommandHelpWriter<CommandSenderE
             }
         }
         Set<Integer> commandHashSet = new HashSet<>();
-        for (Map.Entry<String, ICommand<CommandSenderEx, BukkitArrayReader>> entry : entries) {
-            String argument = entry.getKey();
-            ICommand<CommandSenderEx, BukkitArrayReader> command = entry.getValue();
+        for (Pair<String, ICommand<CommandSenderEx, BukkitArrayReader>> entry : entries) {
+            String argument = entry.getFirst();
+            ICommand<CommandSenderEx, BukkitArrayReader> command = entry.getSecond();
             if (!commandHashSet.add(command.hashCode())) {
                 continue;
             }
