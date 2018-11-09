@@ -3,7 +3,6 @@ package com.github.entrypointkr.junlib.bukkit.location;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import java.util.Map;
@@ -16,13 +15,13 @@ public class Position implements ConfigurationSerializable {
     private final double x;
     private final double z;
 
-    static {
-        ConfigurationSerialization.registerClass(Position.class);
-    }
-
     private Position(double x, double z) {
         this.x = x;
         this.z = z;
+    }
+
+    public Position(Map<String, Object> map) {
+        this(((double) map.get("x")), ((double) map.get("z")));
     }
 
     public static Position of(double x, double z) {
@@ -43,10 +42,6 @@ public class Position implements ConfigurationSerializable {
 
     public Position toFloor() {
         return of(Location.locToBlock(x), Location.locToBlock(z));
-    }
-
-    public Position(Map<String, Object> map) {
-        this(((double) map.get("x")), ((double) map.get("z")));
     }
 
     @Override

@@ -25,7 +25,7 @@ public class Events {
     private static final Map<EventPriority, Set<EventListener<Event>>> listeners = Collections.synchronizedMap(new EnumMap<>(EventPriority.class));
 
     @SuppressWarnings("unchecked")
-    public static void init(Plugin plugin) {
+    public static void inject(Plugin plugin) {
         try {
             Field field = HandlerList.class.getDeclaredField("allLists");
             field.setAccessible(true);
