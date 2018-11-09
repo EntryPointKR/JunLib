@@ -45,4 +45,15 @@ public class ClickHandler implements GUIHandler<InventoryEvent> {
     public ClickHandler put(int row, int column, GUIHandler<InventoryClickEvent> handler) {
         return put(handler, row * 9 + column);
     }
+
+    public ClickHandler remove(int... slots) {
+        for (int slot : slots) {
+            slotMap.remove(slot);
+        }
+        return this;
+    }
+
+    public ClickHandler remove(int row, int column) {
+        return remove(row * 9 + column);
+    }
 }
