@@ -6,10 +6,12 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.util.NumberConversions;
 
 import java.util.Map;
 
+@SerializableAs("org.bukkit.Location")
 public class SerializableLocation extends Location implements ConfigurationSerializable {
     static {
         ConfigurationSerialization.registerClass(SerializableLocation.class);
@@ -21,6 +23,10 @@ public class SerializableLocation extends Location implements ConfigurationSeria
 
     public SerializableLocation(World world, double x, double y, double z, float yaw, float pitch) {
         super(world, x, y, z, yaw, pitch);
+    }
+
+    public SerializableLocation(Location location) {
+        this(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
     @Override

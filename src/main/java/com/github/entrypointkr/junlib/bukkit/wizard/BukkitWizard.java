@@ -3,6 +3,7 @@ package com.github.entrypointkr.junlib.bukkit.wizard;
 import com.github.entrypointkr.junlib.JunLibrary;
 import com.github.entrypointkr.junlib.bukkit.event.EventListener;
 import com.github.entrypointkr.junlib.bukkit.event.Events;
+import com.github.entrypointkr.junlib.bukkit.util.Runnables;
 import com.github.entrypointkr.junlib.wizard.Wizard;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
@@ -26,19 +27,19 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
     private final H human;
     private final boolean cancel;
     private final long timeoutTick;
-    private final Runnable whenCancel;
+    private final Runnable whenTimeout;
 
-    public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenCancel) {
+    public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenTimeout) {
         this.priority = priority;
         this.type = type;
         this.human = human;
         this.cancel = cancel;
         this.timeoutTick = timeoutTick;
-        this.whenCancel = whenCancel;
+        this.whenTimeout = whenTimeout;
     }
 
     public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick) {
-        this(priority, type, human, cancel, timeoutTick, () -> human.sendMessage("입력 시간이 초과되었습니다."));
+        this(priority, type, human, cancel, timeoutTick, Runnables.EMPTY);
     }
 
     public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel) {
@@ -76,7 +77,10 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
         }
         if (timeoutTick >= 0) {
             processor.timeoutTask = Bukkit.getScheduler().runTaskLater(JunLibrary.getPlugin(),
-                    () -> cancel(name), timeoutTick);
+                    () -> {
+                        cancel(name);
+                        whenTimeout.run();
+                    }, timeoutTick);
         }
         Events.registerListener(priority, processor);
     }
@@ -117,7 +121,6 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
                 timeoutTask.cancel();
             }
             Events.removeListener(this);
-            whenCancel.run();
         }
     }
 }

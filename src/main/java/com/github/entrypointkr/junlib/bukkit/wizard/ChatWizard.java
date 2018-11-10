@@ -1,7 +1,7 @@
 package com.github.entrypointkr.junlib.bukkit.wizard;
 
-import com.github.entrypointkr.junlib.bukkit.util.Runnables;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -16,7 +16,12 @@ public class ChatWizard extends BukkitWizard<String, AsyncPlayerChatEvent, Human
     }
 
     public ChatWizard(EventPriority priority, HumanEntity human, boolean cancel, long timeoutTick) {
-        this(priority, human, cancel, timeoutTick, Runnables.EMPTY);
+        this(priority, human, cancel, timeoutTick, () -> {
+            // Cast to Player for legacy bukkit
+            if (human instanceof Player) {
+                ((Player) human).sendMessage("입력할 시간이 초과되었습니다.");
+            }
+        });
     }
 
     public ChatWizard(EventPriority priority, HumanEntity human, boolean cancel) {
