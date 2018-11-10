@@ -11,8 +11,13 @@ import java.util.function.Consumer;
  * Created by JunHyeong on 2018-11-02
  */
 public class ChatWizard extends BukkitWizard<String, AsyncPlayerChatEvent, HumanEntity> implements StringWizard {
+
+    public ChatWizard(EventPriority priority, HumanEntity human, boolean cancel, long timeoutTick, Runnable whenTimeout, boolean runOnMain) {
+        super(priority, AsyncPlayerChatEvent.class, human, cancel, timeoutTick, whenTimeout, runOnMain);
+    }
+
     public ChatWizard(EventPriority priority, HumanEntity human, boolean cancel, long timeoutTick, Runnable whenTimeout) {
-        super(priority, AsyncPlayerChatEvent.class, human, cancel, timeoutTick, whenTimeout);
+        this(priority, human, cancel, timeoutTick, whenTimeout, true);
     }
 
     public ChatWizard(EventPriority priority, HumanEntity human, boolean cancel, long timeoutTick) {

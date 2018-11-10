@@ -28,14 +28,20 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
     private final boolean cancel;
     private final long timeoutTick;
     private final Runnable whenTimeout;
+    private final boolean runOnMain;
 
-    public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenTimeout) {
+    public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenTimeout, boolean runOnMain) {
         this.priority = priority;
         this.type = type;
         this.human = human;
         this.cancel = cancel;
         this.timeoutTick = timeoutTick;
         this.whenTimeout = whenTimeout;
+        this.runOnMain = runOnMain;
+    }
+
+    public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenTimeout) {
+        this(priority, type, human, cancel, timeoutTick, whenTimeout, true);
     }
 
     public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick) {
@@ -108,7 +114,11 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
                 }
                 process(e, data -> {
                     BukkitWizard.cancel(getPlayer());
-                    consumer.accept(data);
+                    if (e.isAsynchronous() && runOnMain) {
+                        Bukkit.getScheduler().runTask(JunLibrary.getPlugin(), () -> consumer.accept(data));
+                    } else {
+                        consumer.accept(data);
+                    }
                     if (e instanceof Cancellable && cancel) {
                         ((Cancellable) e).setCancelled(true);
                     }
