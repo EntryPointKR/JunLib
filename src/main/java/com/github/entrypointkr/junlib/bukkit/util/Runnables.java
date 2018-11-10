@@ -11,6 +11,9 @@ import java.util.logging.Logger;
  * Created by JunHyeong on 2018-11-03
  */
 public class Runnables {
+    public static final Runnable EMPTY = () -> {
+    };
+
     private Runnables() {
     }
 

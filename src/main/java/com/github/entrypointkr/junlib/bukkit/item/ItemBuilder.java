@@ -43,7 +43,7 @@ public class ItemBuilder implements ItemFactory {
     public ItemStack create() {
         ItemStack item = baseFactory.get();
         if (data != null) {
-            item.setData(data);
+            item.setDurability(data.getData());
         }
         return item;
     }

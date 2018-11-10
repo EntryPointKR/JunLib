@@ -24,4 +24,8 @@ public class LocationWrapper {
     public Position toPosition() {
         return Position.of(location.getX(), location.getZ());
     }
+
+    public Location toBlockLocation() {
+        return new Location(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
 }

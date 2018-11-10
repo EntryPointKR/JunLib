@@ -2,6 +2,7 @@ package com.github.entrypointkr.junlib.bukkit.event;
 
 import com.github.entrypointkr.junlib.JunLibrary;
 import com.github.entrypointkr.junlib.bukkit.event.custom.PlayerWalkEvent;
+import com.github.entrypointkr.junlib.bukkit.location.LocationWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -20,18 +21,15 @@ public class CustomEventNotifier implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        Location from = e.getFrom();
-        Location to = e.getTo();
-        if (from.getBlockX() == to.getBlockX()
-                && from.getBlockY() == to.getBlockY()
-                && from.getBlockZ() == to.getBlockZ()) {
+        Location from = LocationWrapper.of(e.getFrom()).toBlockLocation();
+        Location to = LocationWrapper.of(e.getTo()).toBlockLocation();
+        if (from.equals(to)) {
             return;
         }
-
         PlayerWalkEvent event = new PlayerWalkEvent(e.getPlayer(), from, to);
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
-            e.setCancelled(true);
+            e.getPlayer().teleport(from);
         }
     }
 }
