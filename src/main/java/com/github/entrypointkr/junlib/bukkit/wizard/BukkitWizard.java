@@ -3,10 +3,8 @@ package com.github.entrypointkr.junlib.bukkit.wizard;
 import com.github.entrypointkr.junlib.JunLibrary;
 import com.github.entrypointkr.junlib.bukkit.event.EventListener;
 import com.github.entrypointkr.junlib.bukkit.event.Events;
-import com.github.entrypointkr.junlib.bukkit.util.Runnables;
 import com.github.entrypointkr.junlib.wizard.Wizard;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -40,11 +38,11 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
     }
 
     public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick) {
-        this(priority, type, human, cancel, timeoutTick, Runnables.EMPTY);
+        this(priority, type, human, cancel, timeoutTick, () -> human.sendMessage("입력 시간이 초과되었습니다."));
     }
 
     public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel) {
-        this(priority, type, human, cancel, 20L * 15L, Runnables.EMPTY);
+        this(priority, type, human, cancel, 20L * 15L);
     }
 
     public BukkitWizard(H human, Class<E> type, boolean cancel) {
@@ -64,7 +62,7 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
         return false;
     }
 
-    public static boolean cancel(Entity entity) {
+    public static boolean cancel(HumanEntity entity) {
         return cancel(entity.getName());
     }
 

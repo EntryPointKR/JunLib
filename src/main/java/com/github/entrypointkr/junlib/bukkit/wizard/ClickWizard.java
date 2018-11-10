@@ -1,6 +1,5 @@
 package com.github.entrypointkr.junlib.bukkit.wizard;
 
-import com.github.entrypointkr.junlib.bukkit.util.Runnables;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventPriority;
@@ -17,7 +16,7 @@ public class ClickWizard extends BukkitWizard<Block, PlayerInteractEvent, HumanE
     }
 
     public ClickWizard(EventPriority priority, HumanEntity human, boolean cancel, long timeoutTick) {
-        this(priority, human, cancel, timeoutTick, Runnables.EMPTY);
+        this(priority, human, cancel, timeoutTick, () -> human.sendMessage("클릭 시간이 초과되었습니다."));
     }
 
     public ClickWizard(EventPriority priority, HumanEntity human, boolean cancel) {
