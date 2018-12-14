@@ -11,7 +11,20 @@ import java.util.List;
  * Created by JunHyeong on 2018-10-29
  */
 public class CombinedHandler implements GUIHandler<InventoryEvent> {
-    private final List<GUIHandler<InventoryEvent>> listeners = new ArrayList<>();
+    private final List<GUIHandler<InventoryEvent>> listeners;
+
+    public CombinedHandler(List<GUIHandler<InventoryEvent>> listeners) {
+        this.listeners = listeners;
+    }
+
+    @SafeVarargs
+    public CombinedHandler(GUIHandler<InventoryEvent>... listeners) {
+        this(new ArrayList<>(Arrays.asList(listeners)));
+    }
+
+    public CombinedHandler() {
+        this(new ArrayList<>());
+    }
 
     @Override
     public void onEvent(GUI gui, InventoryEvent e) {
