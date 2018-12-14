@@ -42,7 +42,7 @@ class JunLibraryCommand {
     }
 
     @SuppressWarnings("deprecation")
-    static class HealCommand implements BukkitCommand {
+    static class HealCommand extends BukkitCommand {
         @Override
         public void doExecute(CommandSenderEx sender, BukkitArrayReader args) {
             Player player = sender.toPlayerOrThrow();
@@ -56,7 +56,7 @@ class JunLibraryCommand {
         }
     }
 
-    static class JumpCommand implements BukkitCommand {
+    static class JumpCommand extends BukkitCommand {
         @Override
         public void doExecute(CommandSenderEx sender, BukkitArrayReader args) {
             Player player = sender.toPlayerOrThrow();
@@ -70,7 +70,7 @@ class JunLibraryCommand {
         }
     }
 
-    static class EntitiesKillCommand implements BukkitCommand {
+    static class EntitiesKillCommand extends BukkitCommand {
         @Override
         public void doExecute(CommandSenderEx sender, BukkitArrayReader args) {
             World world = sender.isPlayer()
@@ -92,7 +92,7 @@ class JunLibraryCommand {
         }
     }
 
-    static class GUIDemoCommand implements BukkitCommand {
+    static class GUIDemoCommand extends BukkitCommand {
         @Override
         public void doExecute(CommandSenderEx sender, BukkitArrayReader args) {
             Player player = sender.toPlayerOrThrow();
@@ -113,7 +113,7 @@ class JunLibraryCommand {
         }
     }
 
-    static class PaginationGUIDemoCommand implements BukkitCommand {
+    static class PaginationGUIDemoCommand extends BukkitCommand {
         @Override
         public void doExecute(CommandSenderEx sender, BukkitArrayReader args) {
             Player player = sender.toPlayerOrThrow();

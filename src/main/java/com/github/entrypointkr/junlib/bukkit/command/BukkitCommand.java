@@ -7,19 +7,19 @@ import com.github.entrypointkr.junlib.command.PermissibleCommand;
 /**
  * Created by JunHyeong on 2018-10-26
  */
-public interface BukkitCommand extends PermissibleCommand<CommandSenderEx, BukkitArrayReader> {
-    default String permission() {
+public abstract class BukkitCommand implements PermissibleCommand<CommandSenderEx, BukkitArrayReader> {
+    public String permission() {
         return null;
     }
 
     @Override
-    default boolean checkPermission(CommandSenderEx sender) {
+    public boolean checkPermission(CommandSenderEx sender) {
         String permission = permission();
         return permission == null || sender.hasPermission(permission);
     }
 
     @Override
-    default void onPermissionDenied(CommandSenderEx sender, BukkitArrayReader args) {
+    public void onPermissionDenied(CommandSenderEx sender, BukkitArrayReader args) {
         sender.sendMessage(Bukkits.colorize(String.format("&f권한 &e%s &f가 없습니다.", permission())));
     }
 }
