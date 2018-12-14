@@ -19,7 +19,7 @@ public abstract class BukkitCommand extends PermissibleCommand<CommandSenderEx, 
     }
 
     @Override
-    public void onPermissionDenied(CommandSenderEx sender, BukkitArrayReader args) {
+    protected void onPermissionDenied(CommandSenderEx sender, BukkitArrayReader args) {
         sender.sendMessage(Bukkits.colorize(String.format("&f권한 &e%s &f가 없습니다.", permission())));
     }
 }
