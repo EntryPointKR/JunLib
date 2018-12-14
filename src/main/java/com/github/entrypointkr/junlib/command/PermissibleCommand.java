@@ -5,19 +5,19 @@ import com.github.entrypointkr.junlib.util.ArrayReader;
 /**
  * Created by JunHyeong on 2018-10-26
  */
-public interface PermissibleCommand<T, U extends ArrayReader<String>> extends DetailedCommand<T, U> {
-    default boolean checkPermission(T sender) {
-        return true;
+public abstract class PermissibleCommand<T, U extends ArrayReader<String>> implements DetailedCommand<T, U> {
+    public boolean checkPermission(T sender) {
+        return true; // Hook
     }
 
-    void doExecute(T sender, U args);
+    protected abstract void doExecute(T sender, U args);
 
-    default void onPermissionDenied(T sender, U args) {
+    protected void onPermissionDenied(T sender, U args) {
         // Hook
     }
 
     @Override
-    default void execute(T sender, U args) {
+    public final void execute(T sender, U args) {
         if (checkPermission(sender)) {
             doExecute(sender, args);
         } else {

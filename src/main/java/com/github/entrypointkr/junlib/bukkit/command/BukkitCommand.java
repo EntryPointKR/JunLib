@@ -7,7 +7,7 @@ import com.github.entrypointkr.junlib.command.PermissibleCommand;
 /**
  * Created by JunHyeong on 2018-10-26
  */
-public abstract class BukkitCommand implements PermissibleCommand<CommandSenderEx, BukkitArrayReader> {
+public abstract class BukkitCommand extends PermissibleCommand<CommandSenderEx, BukkitArrayReader> {
     public String permission() {
         return null;
     }
