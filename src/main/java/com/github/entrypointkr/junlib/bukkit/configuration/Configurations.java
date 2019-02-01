@@ -1,6 +1,6 @@
 package com.github.entrypointkr.junlib.bukkit.configuration;
 
-import com.github.entrypointkr.junlib.bukkit.util.FileUtils;
+import com.github.entrypointkr.junlib.util.FileUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -41,8 +41,7 @@ public class Configurations {
     }
 
     public static void save(FileConfiguration config, File file, Charset charset) throws IOException {
-        FileUtils.ensure(file);
-        Files.write(file.toPath(), config.saveToString().getBytes(charset));
+        Files.write(FileUtils.writeEnsure(file).toPath(), config.saveToString().getBytes(charset));
     }
 
     public static void save(FileConfiguration config, Plugin plugin, String fileName, Charset charset) throws IOException {

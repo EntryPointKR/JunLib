@@ -12,6 +12,6 @@ public interface BukkitArrayReader extends ArrayReader<String> {
     }
 
     default Converter<BukkitStringConverter> getConvert(int index) {
-        return Converter.ofCommand(getOptional(index).orElse(null), BukkitStringConverter::new, str -> index + " 에 인자가 없습니다.");
+        return Converter.ofCommand(getOptional(index).orElse(null), BukkitStringConverter::new, str -> (index + 1) + " 번째 인자가 누락되었습니다..");
     }
 }

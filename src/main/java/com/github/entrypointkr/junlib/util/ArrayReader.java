@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * Created by JunHyeong on 2018-10-14
  */
-public interface ArrayReader<T> {
+public interface ArrayReader<T> { // TODO: implement List?
     int remain();
 
     boolean hasRemain();

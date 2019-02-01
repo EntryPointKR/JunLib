@@ -41,7 +41,7 @@ public class SingleTask implements BukkitTask {
 
     @Override
     public boolean isCancelled() {
-        return current != null && current.isCancelled();
+        return current == null || current.isCancelled();
     }
 
     @Override
@@ -49,8 +49,6 @@ public class SingleTask implements BukkitTask {
         if (current != null) {
             current.cancel();
             whenCancel.run();
-            current = null;
-            whenCancel = null;
         }
     }
 }

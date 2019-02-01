@@ -1,6 +1,7 @@
 package com.github.entrypointkr.junlib.bukkit.item;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -20,6 +21,22 @@ public class ItemWrapper {
 
     public static ItemWrapper of(ItemStack item) {
         return new ItemWrapper(item);
+    }
+
+    public static boolean isEmpty(ItemStack item) {
+        return of(item).isEmpty();
+    }
+
+    public static boolean isNotEmpty(ItemStack item) {
+        return of(item).isNotEmpty();
+    }
+
+    public boolean isEmpty() {
+        return item == null || item.getType() == Material.AIR;
+    }
+
+    public boolean isNotEmpty() {
+        return !isEmpty();
     }
 
     public Optional<ItemMeta> getItemMeta() {

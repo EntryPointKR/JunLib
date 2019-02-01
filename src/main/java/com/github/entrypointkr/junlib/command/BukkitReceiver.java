@@ -1,4 +1,4 @@
-package com.github.entrypointkr.junlib.bukkit.command;
+package com.github.entrypointkr.junlib.command;
 
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -8,30 +8,41 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Optional;
 import java.util.Set;
 
-/**
- * Created by JunHyeong on 2018-10-24
- */
-public class CommandSenderExImpl implements CommandSenderEx {
+public class BukkitReceiver implements CommandSource, CommandSender {
     private final CommandSender sender;
 
-    public CommandSenderExImpl(CommandSender sender) {
+    public BukkitReceiver(CommandSender sender) {
         this.sender = sender;
     }
 
-    @Override
+    public CommandSender getSender() {
+        return sender;
+    }
+
     public boolean isPlayer() {
-        return sender instanceof Player;
+        return getSender() instanceof Player;
+    }
+
+    public Player toPlayer(String message) {
+        if (isPlayer()) {
+            return (Player) getSender();
+        }
+        throw new CommandException(message);
+    }
+
+    public Player toPlayer() {
+        return toPlayer("당신은 플레이어가 아닙니다.");
     }
 
     @Override
-    public Optional<Player> toPlayer() {
-        return isPlayer() ? Optional.of(((Player) sender)) : Optional.empty();
+    public void sendMessage(Object... messages) {
+        for (Object message : messages) {
+            sendMessage(message.toString());
+        }
     }
 
-    @Override
     public void sendMessage(String message) {
         sender.sendMessage(message);
     }
@@ -120,4 +131,5 @@ public class CommandSenderExImpl implements CommandSenderEx {
     public void setOp(boolean value) {
         sender.setOp(value);
     }
+
 }

@@ -1,9 +1,9 @@
 package com.github.entrypointkr.junlib;
 
-import com.github.entrypointkr.junlib.bukkit.command.CommandManager;
 import com.github.entrypointkr.junlib.bukkit.event.CustomEventNotifier;
 import com.github.entrypointkr.junlib.bukkit.event.Events;
 import com.github.entrypointkr.junlib.bukkit.util.Bukkits;
+import com.github.entrypointkr.junlib.command.CommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,8 +24,9 @@ public class JunLibrary extends JavaPlugin {
     @Override
     public void onEnable() {
         Events.inject(this);
-        JunLibraryCommand.register(this);
+//        JunLibraryCommand.register(this);
         CustomEventNotifier.register(this);
+        NewJunLibraryCommand.register(this);
         new Metrics(this);
     }
 }
