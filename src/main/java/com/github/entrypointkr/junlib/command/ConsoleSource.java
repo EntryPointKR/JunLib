@@ -3,14 +3,14 @@ package com.github.entrypointkr.junlib.command;
 /**
  * Created by JunHyeong Lim on 2019-01-20
  */
-public class ConsoleReceiver implements CommandSource {
+public class ConsoleSource implements CommandSource {
     private final boolean accessible;
 
-    public ConsoleReceiver(boolean accessible) {
+    public ConsoleSource(boolean accessible) {
         this.accessible = accessible;
     }
 
-    public ConsoleReceiver() {
+    public ConsoleSource() {
         this(true);
     }
 

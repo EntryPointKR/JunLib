@@ -16,7 +16,7 @@ public class CommandManager {
         this.commandMap = commandMap;
     }
 
-    public void registerCommand(Plugin plugin, Command<BukkitReceiver> command, String... aliases) {
+    public void registerCommand(Plugin plugin, Command<BukkitSource> command, String... aliases) {
         Validate.notEmpty(aliases);
         String main = aliases[0];
         commandMap.register(main, "junlibrary", new BukkitCommandAdaptor(main, "", "/", Arrays.asList(aliases), plugin, command));

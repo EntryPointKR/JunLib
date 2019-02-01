@@ -10,10 +10,10 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
 
-public class BukkitReceiver implements CommandSource, CommandSender {
+public class BukkitSource implements CommandSource, CommandSender {
     private final CommandSender sender;
 
-    public BukkitReceiver(CommandSender sender) {
+    public BukkitSource(CommandSender sender) {
         this.sender = sender;
     }
 

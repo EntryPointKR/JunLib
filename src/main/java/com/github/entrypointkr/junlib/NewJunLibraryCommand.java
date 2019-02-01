@@ -1,6 +1,6 @@
 package com.github.entrypointkr.junlib;
 
-import com.github.entrypointkr.junlib.command.BukkitReceiver;
+import com.github.entrypointkr.junlib.command.BukkitSource;
 import com.github.entrypointkr.junlib.command.Command;
 import com.github.entrypointkr.junlib.command.CommandBuilder;
 import org.bukkit.Location;
@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 @SuppressWarnings("deprecation")
 public class NewJunLibraryCommand {
     public static void register(Plugin plugin) {
-        Command<BukkitReceiver> healCommand = CommandBuilder.ofBukkit()
+        Command<BukkitSource> healCommand = CommandBuilder.ofBukkit()
                 .perm("junlibrary.heal")
                 .executor((sender, args) -> {
                     Player player = sender.toPlayer();
@@ -19,7 +19,7 @@ public class NewJunLibraryCommand {
                     player.sendMessage("Done.");
                 })
                 .build();
-        Command<BukkitReceiver> jumpCommand = CommandBuilder.ofBukkit()
+        Command<BukkitSource> jumpCommand = CommandBuilder.ofBukkit()
                 .perm("junlibrary.jump")
                 .executor((sender, args) -> {
                     Player player = sender.toPlayer();
@@ -35,7 +35,7 @@ public class NewJunLibraryCommand {
                     }
                 })
                 .build();
-        Command<BukkitReceiver> parent = CommandBuilder.ofBukkit()
+        Command<BukkitSource> parent = CommandBuilder.ofBukkit()
                 .child(healCommand, "heal", "h")
                 .child(jumpCommand, "jump", "j")
                 .helper()

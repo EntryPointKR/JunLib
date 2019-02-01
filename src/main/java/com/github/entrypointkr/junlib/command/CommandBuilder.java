@@ -16,7 +16,7 @@ public class CommandBuilder<T extends CommandSource> {
         return new CommandBuilder<>();
     }
 
-    public static CommandBuilder<BukkitReceiver> ofBukkit() {
+    public static CommandBuilder<BukkitSource> ofBukkit() {
         return of();
     }
 

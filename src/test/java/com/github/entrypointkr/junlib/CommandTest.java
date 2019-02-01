@@ -21,7 +21,7 @@ public class CommandTest {
 
     @Test
     public void command() {
-        Command<BukkitReceiver> healCommand = CommandBuilder.ofBukkit()
+        Command<BukkitSource> healCommand = CommandBuilder.ofBukkit()
                 .perm("junlibrary.heal")
                 .executor((sender, args) -> {
                     Player player = sender.toPlayer();
@@ -29,7 +29,7 @@ public class CommandTest {
                     player.sendMessage("완료");
                 })
                 .build();
-        Command<BukkitReceiver> parent = CommandBuilder.ofBukkit()
+        Command<BukkitSource> parent = CommandBuilder.ofBukkit()
                 .child(healCommand, "heal")
                 .helper(new DefaultCommandHelper())
                 .build();
