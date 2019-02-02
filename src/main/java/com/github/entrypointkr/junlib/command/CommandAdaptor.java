@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandAdaptor<T extends CommandSource> implements Command<T> {
-    private final Argument<?>[] arguments;
+    private final Argument<?>[] arguments; // TODO: Composite interface?
     private final CommandExecutor<T> executor;
 
     public CommandAdaptor(Argument<?>[] arguments, CommandExecutor<T> executor) {
@@ -14,18 +14,36 @@ public class CommandAdaptor<T extends CommandSource> implements Command<T> {
         this.executor = executor;
     }
 
+    private void fail(Argument<?> failedArgument) {
+        throw new ArgumentException(this, failedArgument);
+    }
+
+    private Object parse(Reader<String> args, Argument<?> argument) {
+        try {
+            Object parsed = argument.parse(args);
+            if (parsed == null) {
+                fail(argument);
+            }
+            return parsed;
+        } catch (ArgumentException ex) {
+            ex.setSource(this);
+            throw ex;
+        }
+    }
+
     @Override
     public void execute(T receiver, Reader<String> args) {
         CommandArguments argumentMap = new CommandArguments();
         if (arguments != null) {
             for (Argument<?> argument : arguments) {
-                if (args.remain() <= 0) {
-                    break;
+                if (args.isEmpty()) {
+                    if (argument.isRequire()) {
+                        fail(argument);
+                    } else {
+                        break;
+                    }
                 }
-                Object parsed = argument.parse(args);
-                if (parsed == null) {
-                    throw new ArgumentParseException(this, argument);
-                }
+                Object parsed = parse(args, argument);
                 argumentMap.put(parsed, argument.getName());
             }
         }

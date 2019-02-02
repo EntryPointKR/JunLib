@@ -14,11 +14,13 @@ public class CommandArguments {
         return this;
     }
 
-    public <T> T get(String key, Class<T> type) {
-        return getOptional(key).map(type::cast).get();
+    public <T> Optional<T> get(String key, Class<T> type) {
+        return Optional.ofNullable(arguments.get(key))
+                .filter(type::isInstance)
+                .map(type::cast);
     }
 
-    public Optional<Object> getOptional(String key) {
-        return Optional.ofNullable(arguments.get(key));
+    public <T> T getOrNull(String key, Class<T> type) {
+        return get(key, type).orElse(null);
     }
 }

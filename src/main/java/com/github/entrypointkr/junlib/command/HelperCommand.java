@@ -23,7 +23,7 @@ public class HelperCommand<T extends CommandSource> implements Command<T> {
         try {
             command.execute(receiver, args);
         } catch (CommandException ex) {
-            String prev = Reader.getPreviousArguments(args);
+            String prev = args.getPreviousArguments();
             String prefix;
             if (StringUtils.isNotEmpty(label)) {
                 prefix = prev.isEmpty() ? label : label + ' ' + prev;

@@ -1,6 +1,5 @@
 package com.github.entrypointkr.junlib.command;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -61,7 +60,7 @@ public class CommandBuilder<T extends CommandSource> {
         if (commandMap.isEmpty()) {
             command = new DetailedCommand<>(description, permission, new CommandAdaptor<>(arguments, executable), arguments);
         } else {
-            MapCommand<T> mapCommand = new MapCommand<>(new LinkedHashMap<>(commandMap), new HashMap<>());
+            MapCommand<T> mapCommand = MapCommand.of(new LinkedHashMap<>(commandMap));
             if (executable != null) {
                 mapCommand.defaultExecutor((receiver, args) -> {
                     CommandArguments arguments = new CommandArguments();

@@ -14,20 +14,39 @@ public class MapCommand<T extends CommandSource> implements Command<T>, Combined
     private final Map<Command<T>, List<String>> keyMap;
     private Executable<T> defaultExecutor;
 
-    public MapCommand(Map<String, Command<T>> commandMap, Map<Command<T>, List<String>> keyMap, Executable<T> defaultExecutor) {
+    private MapCommand(Map<String, Command<T>> commandMap, Map<Command<T>, List<String>> keyMap, Executable<T> defaultExecutor) {
         this.commandMap = commandMap;
         this.keyMap = keyMap;
         this.defaultExecutor = defaultExecutor;
     }
 
-    public MapCommand(Map<String, Command<T>> commandMap, Map<Command<T>, List<String>> keyMap) {
-        this(commandMap, keyMap, (receiver, args) -> {
+    public static <T extends CommandSource> MapCommand<T> of(
+            Map<String, Command<T>> commandMap,
+            Map<Command<T>, List<String>> keyMap,
+            Executable<T> defaultExecutor
+    ) {
+        return new MapCommand<>(commandMap, keyMap, defaultExecutor);
+    }
+
+    public static <T extends CommandSource> MapCommand<T> of(
+            Map<String, Command<T>> commandMap,
+            Map<Command<T>, List<String>> keyMap
+    ) {
+        return of(commandMap, keyMap, (receiver, args) -> {
             throw new CommandException("명령어 도움말");
         });
     }
 
-    public MapCommand() {
-        this(new LinkedHashMap<>(), new HashMap<>());
+    public static <T extends CommandSource> MapCommand<T> of(Map<String, Command<T>> commandMap) {
+        Map<Command<T>, List<String>> keyMap = new HashMap<>();
+        for (Map.Entry<String, Command<T>> entry : commandMap.entrySet()) {
+            keyMap.computeIfAbsent(entry.getValue(), k -> new ArrayList<>()).add(entry.getKey());
+        }
+        return of(commandMap, keyMap);
+    }
+
+    public static <T extends CommandSource> MapCommand<T> of() {
+        return of(new LinkedHashMap<>(), new HashMap<>());
     }
 
     private Executable getSource(Executable executed) {
@@ -90,25 +109,10 @@ public class MapCommand<T extends CommandSource> implements Command<T>, Combined
     }
 
     @Override
-    public void forEach(StringBuilder argumentsBuilder, BiConsumer<Command<?>, List<String>> consumer) {
+    public void forEach(BiConsumer<Command<?>, List<String>> consumer) {
         for (Map.Entry<Command<T>, List<String>> entry : keyMap.entrySet()) {
-
+            consumer.accept(entry.getKey(), entry.getValue());
         }
-//        for (Map.Entry<String, Command<T>> entry : commandMap.entrySet()) {
-//            String argument = entry.getKey();
-//            Command command = entry.getValue();
-//            int prevSize = argumentsBuilder.length();
-//            if (argumentsBuilder.length() > 0) {
-//                argumentsBuilder.append(' ');
-//            }
-//            argumentsBuilder.append(argument);
-//            if (command instanceof MapCommand) {
-//                ((MapCommand) command).forEach(argumentsBuilder, prefixConsumer);
-//            } else {
-//                prefixConsumer.accept(argumentsBuilder.toString(), command);
-//            }
-//            argumentsBuilder.setLength(prevSize);
-//        }
     }
 
     @Override

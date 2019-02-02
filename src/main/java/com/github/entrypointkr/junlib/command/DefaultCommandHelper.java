@@ -14,7 +14,7 @@ import java.util.logging.Level;
  */
 public class DefaultCommandHelper implements CommandHelper {
     private String getArgumentFormat(Argument<?> argument) {
-        return argument.getDefault() != null ? "[%s]" : "(%s)";
+        return argument.isRequire() ? "(%s)" : "[%s]";
     }
 
     private String getInformation(String arguments, Executable executable) {
@@ -41,7 +41,7 @@ public class DefaultCommandHelper implements CommandHelper {
     private String getHeader(Exception ex) {
         if (ex instanceof NoPermissionException) {
             return String.format("권한 %s 이 없습니다.", ((NoPermissionException) ex).getPermission());
-        } else if (ex instanceof ArgumentParseException) {
+        } else if (ex instanceof ArgumentException) {
             return "사용법이 잘못되었습니다.";
         } else {
             return ex.getMessage();
@@ -58,16 +58,10 @@ public class DefaultCommandHelper implements CommandHelper {
             Bukkit.getLogger().log(Level.WARNING, ex.getMessage(), ex);
         }
         if (source instanceof Combined) {
-            List<Pair<String, Executable>> executables = new ArrayList<>();
-            ((Combined) source).forEach(new StringBuilder(), (arguments, command) -> executables.add(new Pair<>(arguments, command)));
-            for (Pair<String, Executable> pair : executables) {
-                int prev = prefixBuilder.length();
-                if (prefixBuilder.length() > 0) {
-                    prefixBuilder.append(' ');
-                }
-                prefixBuilder.append(pair.getFirst());
-                receiver.sendMessage(getInformation(prefixBuilder.toString(), pair.getSecond()));
-                prefixBuilder.setLength(prev);
+            List<Pair<String, Command<?>>> executables = new ArrayList<>();
+            ((Combined) source).deepForEach(prefixBuilder, (arguments, command) -> executables.add(new Pair<>(arguments, command)));
+            for (Pair<String, Command<?>> pair : executables) {
+                receiver.sendMessage(getInformation(pair.getFirst(), pair.getSecond()));
             }
         } else {
             receiver.sendMessage(getInformation(prefix, source));

@@ -2,26 +2,28 @@ package com.github.entrypointkr.junlib.command;
 
 import com.github.entrypointkr.junlib.command.util.Reader;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 public class Argument<T> {
     private final String name;
     private final Function<Reader<String>, T> mapper;
     private final TabCompletable<CommandSource> tabCompletar;
-    private Supplier<T> def;
+    private UnaryOperator<String> failMessageFunc;
+    private boolean require;
 
-    public Argument(String name, Function<Reader<String>, T> mapper, TabCompletable<CommandSource> tabCompletar, Supplier<T> def) {
+    public Argument(String name, Function<Reader<String>, T> mapper, TabCompletable<CommandSource> tabCompletar, boolean require) {
         this.name = name;
         this.mapper = mapper;
         this.tabCompletar = tabCompletar;
-        this.def = def;
+        this.require = require;
     }
 
-    public Argument(String name, Function<Reader<String>, T> mapper, TabCompletable<CommandSource> tabCompletar) {
-        this(name, mapper, tabCompletar, null);
+    public Argument(String name, Function<Reader<String>, T> mapper, TabCompletable<CommandSource> tabCompletor) {
+        this(name, mapper, tabCompletor, true);
     }
 
     public Argument(String name, Function<Reader<String>, T> mapper) {
@@ -34,7 +36,13 @@ public class Argument<T> {
     }
 
     public static Argument<Player> player(String name) {
-        return new Argument<>(name, reader -> Bukkit.getPlayer(reader.read()));
+        return new Argument<>(name, reader -> Bukkit.getPlayer(reader.read()))
+                .message(p -> p + " 는 존재하지 않는 플레이어입니다.");
+    }
+
+    public static Argument<World> world(String name) {
+        return new Argument<>(name, reader -> Bukkit.getWorld(reader.read()))
+                .message(w -> w + " 는 존재하지 않는 월드입니다.");
     }
 
     public static Argument<String> joinString(String name, String join) {
@@ -50,21 +58,40 @@ public class Argument<T> {
         });
     }
 
-    public Argument<T> def(Supplier<T> def) {
-        this.def = def;
+    public Argument<T> message(UnaryOperator<String> messageFunc) {
+        this.failMessageFunc = messageFunc;
         return this;
     }
 
+    public Argument<T> require(boolean require) {
+        this.require = require;
+        return this;
+    }
+
+    public Argument<T> require() {
+        return require(true);
+    }
+
+    public Argument<T> optional() {
+        return require(false);
+    }
+
     public T parse(Reader<String> reader) {
+        int pos = reader.getPosition();
         T ret = mapper.apply(reader);
-        return ret != null ? ret : def.get();
+        if (ret == null) {
+            String consumed = reader.getPreviousArguments(pos);
+            String message = failMessageFunc != null ? failMessageFunc.apply(consumed) : "";
+            throw new ArgumentException(message, this);
+        }
+        return ret;
     }
 
     public String getName() {
         return name;
     }
 
-    public Supplier<T> getDefault() {
-        return def;
+    public boolean isRequire() {
+        return require;
     }
 }

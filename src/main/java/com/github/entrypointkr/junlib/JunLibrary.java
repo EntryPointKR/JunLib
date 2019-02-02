@@ -26,7 +26,7 @@ public class JunLibrary extends JavaPlugin {
         Events.inject(this);
 //        JunLibraryCommand.register(this);
         CustomEventNotifier.register(this);
-        NewJunLibraryCommand.register(this);
+        JunLibraryCommand.register(this);
         new Metrics(this);
     }
 }

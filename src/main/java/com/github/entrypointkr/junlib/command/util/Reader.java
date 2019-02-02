@@ -11,24 +11,16 @@ public class Reader<T> implements SimpleCollection<T> {
         this.collection = collection;
     }
 
-    public static String getPreviousArguments(Reader<?> args) {
-        StringBuilder builder = new StringBuilder();
-        int prevSize = args.getPosition();
-        for (int i = 0; i < prevSize; i++) {
-            if (builder.length() > 0) {
-                builder.append(' ');
-            }
-            builder.append(args.collection.get(i));
-        }
-        return builder.toString();
-    }
-
     public T read() {
         return collection.get(position++);
     }
 
     public int remain() {
         return size() - position;
+    }
+
+    public boolean isEmpty() {
+        return remain() <= 0;
     }
 
     public int getPosition() {
@@ -53,5 +45,21 @@ public class Reader<T> implements SimpleCollection<T> {
     @Override
     public int size() {
         return collection.size();
+    }
+
+    public String getPreviousArguments(int head) {
+        StringBuilder builder = new StringBuilder();
+        int prevSize = getPosition();
+        for (int i = head; i < prevSize; i++) {
+            if (builder.length() > 0) {
+                builder.append(' ');
+            }
+            builder.append(collection.get(i));
+        }
+        return builder.toString();
+    }
+
+    public String getPreviousArguments() {
+        return getPreviousArguments(0);
     }
 }
