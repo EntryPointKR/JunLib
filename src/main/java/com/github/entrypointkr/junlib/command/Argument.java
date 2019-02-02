@@ -9,9 +9,9 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class Argument<T> {
-    private final String name;
     private final Function<Reader<String>, T> mapper;
     private final TabCompletable<CommandSource> tabCompletar;
+    private String name;
     private UnaryOperator<String> failMessageFunc;
     private boolean require;
 
@@ -56,6 +56,11 @@ public class Argument<T> {
             }
             return builder.toString();
         });
+    }
+
+    public Argument<T> name(String name) {
+        this.name = name;
+        return this;
     }
 
     public Argument<T> message(UnaryOperator<String> messageFunc) {

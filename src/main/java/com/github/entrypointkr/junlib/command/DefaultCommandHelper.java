@@ -2,8 +2,8 @@ package com.github.entrypointkr.junlib.command;
 
 import com.github.entrypointkr.junlib.command.util.Reader;
 import com.github.entrypointkr.junlib.util.Pair;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
