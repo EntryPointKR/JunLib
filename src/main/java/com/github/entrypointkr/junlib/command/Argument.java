@@ -58,6 +58,16 @@ public class Argument<T> {
         });
     }
 
+    public static Argument<Boolean> bool(String name) {
+        return new Argument<>(name, reader -> {
+            try {
+                return Boolean.parseBoolean(reader.read());
+            } catch (Exception ex) {
+                return null;
+            }
+        });
+    }
+
     public Argument<T> name(String name) {
         this.name = name;
         return this;
