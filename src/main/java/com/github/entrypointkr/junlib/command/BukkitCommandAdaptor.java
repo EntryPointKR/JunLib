@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginIdentifiableCommand;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,11 +27,18 @@ public class BukkitCommandAdaptor extends Command implements PluginIdentifiableC
     }
 
     @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         command.execute(commandLabel, new BukkitSource(sender), new Reader<>(ArrayCollection.of(args)));
         return true;
     }
 
+    @NotNull
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        return command.tabComplete(new BukkitSource(sender), new Reader<>(ArrayCollection.of(args)));
+    }
+
+    @NotNull
     @Override
     public Plugin getPlugin() {
         return plugin;
