@@ -8,7 +8,7 @@ import com.github.entrypointkr.junlib.bukkit.gui.handler.GUIHandler;
 import com.github.entrypointkr.junlib.bukkit.inventory.InventoryBuilder;
 import com.github.entrypointkr.junlib.bukkit.inventory.InventoryFactory;
 import com.github.entrypointkr.junlib.bukkit.item.ItemBuilder;
-import com.github.entrypointkr.junlib.bukkit.item.SimpleMeta;
+import com.github.entrypointkr.junlib.bukkit.item.Meta;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -106,9 +106,11 @@ public class PaginationComponent implements GUIComponent {
         int maxPage = getMaxPage();
         String pageInfo = String.format("%s/%s", page + 1, maxPage + 1);
         inventory.setItem(offset + 3, ItemBuilder.of(Material.STONE_BUTTON)
-                .create(new SimpleMeta().display(pageInfo)));
+                .meta(Meta.of().display(pageInfo))
+                .create());
         inventory.setItem(offset + 5, ItemBuilder.of(Material.STONE_BUTTON)
-                .create(new SimpleMeta().display(pageInfo)));
+                .meta(Meta.of().display(pageInfo))
+                .create());
     }
 
     public int getMaxPage() {

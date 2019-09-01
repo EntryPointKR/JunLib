@@ -1,5 +1,6 @@
 package com.github.entrypointkr.junlib.command;
 
+import com.github.entrypointkr.junlib.command.exception.CommandException;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

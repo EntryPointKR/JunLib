@@ -1,9 +1,11 @@
-package com.github.entrypointkr.junlib.command;
+package com.github.entrypointkr.junlib.command.exception;
+
+import com.github.entrypointkr.junlib.command.Executable;
 
 /**
  * Created by JunHyeong Lim on 2019-01-20
  */
-public class CommandException extends RuntimeException {
+public final class CommandException extends RuntimeException {
     private Executable source;
 
     public CommandException(Executable source) {

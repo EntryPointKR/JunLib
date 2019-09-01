@@ -2,48 +2,45 @@ package com.github.entrypointkr.junlib.bukkit.item;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-
-import java.util.function.Supplier;
 
 /**
  * Created by JunHyeong on 2018-10-29
  */
-@SuppressWarnings("deprecation")
 public class ItemBuilder implements ItemFactory {
-    private final Supplier<ItemStack> baseFactory;
-    private MaterialData data;
+    private final ItemStack base;
+    private ItemModifier modifier;
 
-    private ItemBuilder(Supplier<ItemStack> baseFactory) {
-        this.baseFactory = baseFactory;
-    }
-
-    public static ItemBuilder of(Supplier<ItemStack> factory) {
-        return new ItemBuilder(factory);
+    private ItemBuilder(ItemStack base) {
+        this.base = base;
     }
 
     public static ItemBuilder of(ItemStack item) {
-        return of(() -> new ItemStack(item));
+        return new ItemBuilder(item);
     }
 
     public static ItemBuilder of(Material material) {
-        return of(() -> new ItemStack(material));
+        return new ItemBuilder(new ItemStack(material));
     }
 
     public static ItemBuilder of(Material material, int amount) {
-        return of(() -> new ItemStack(material, amount));
+        return new ItemBuilder(new ItemStack(material, amount));
     }
 
-    public ItemBuilder data(MaterialData data) {
-        this.data = data;
+    public ItemBuilder modifier(ItemModifier modifier) {
+        this.modifier = modifier;
+        return this;
+    }
+
+    public ItemBuilder meta(ItemMetaModifier meta) {
+        this.modifier = meta;
         return this;
     }
 
     @Override
     public ItemStack create() {
-        ItemStack item = baseFactory.get();
-        if (data != null) {
-            item.setDurability(data.getData());
+        ItemStack item = new ItemStack(base);
+        if (modifier != null) {
+            modifier.modify(item);
         }
         return item;
     }

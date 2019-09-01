@@ -2,6 +2,7 @@ package com.github.entrypointkr.junlib.bukkit.event.listener;
 
 import com.github.entrypointkr.junlib.bukkit.gui.GUI;
 import com.github.entrypointkr.junlib.bukkit.gui.handler.GUIHandler;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryEvent;
 
 import java.util.Arrays;
@@ -17,6 +18,14 @@ public class EventSkipper implements GUIHandler<InventoryEvent> {
 
     public EventSkipper(GUIHandler<InventoryEvent> handler) {
         this.handler = handler;
+    }
+
+    public static EventSkipper of(GUIHandler<InventoryEvent> handler) {
+        return new EventSkipper(handler);
+    }
+
+    public static EventSkipper ofParent(GUI parent, Player owner, GUIHandler<InventoryEvent> handler) {
+        return new EventSkipper(new GUIParent(handler, parent, owner));
     }
 
     public EventSkipper add(Class... skips) {

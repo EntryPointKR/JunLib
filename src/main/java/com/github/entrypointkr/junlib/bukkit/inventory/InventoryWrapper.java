@@ -28,11 +28,13 @@ public class InventoryWrapper {
 
     public int hasSpace(ItemStack item) {
         int result = 0;
-        for (ItemStack element : inventory.getStorageContents()) {
-            if (element == null || element.getType() == Material.AIR) {
-                result += item.getMaxStackSize();
-            } else if (item.isSimilar(element)) {
-                result += item.getMaxStackSize() - element.getAmount();
+        if (item != null) {
+            for (ItemStack element : inventory.getStorageContents()) {
+                if (element == null || element.getType() == Material.AIR) {
+                    result += item.getMaxStackSize();
+                } else if (item.isSimilar(element)) {
+                    result += item.getMaxStackSize() - element.getAmount();
+                }
             }
         }
         return result;
@@ -40,6 +42,31 @@ public class InventoryWrapper {
 
     public boolean hasSpace(ItemStack item, int amount) {
         return hasSpace(item) >= amount;
+    }
+
+    public boolean hasSpaces(Iterable<ItemStack> items) { // TODO: Count / MaxStack
+        int needSlots = 0;
+        int emptySlots = 0;
+        for (ItemStack item : items) {
+            if (item != null) {
+                int amount = item.getAmount();
+                int quantity = amount / item.getType().getMaxStackSize();
+                int remain = amount % item.getType().getMaxStackSize();
+                needSlots += quantity;
+                if (remain > 0) {
+                    needSlots++;
+                }
+            }
+        }
+        for (ItemStack element : inventory.getStorageContents()) {
+            if (element == null || element.getType() == Material.AIR) {
+                emptySlots++;
+            }
+            if (emptySlots >= needSlots) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean giveItem(ItemStack item, int amount) {

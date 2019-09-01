@@ -1,5 +1,9 @@
 package com.github.entrypointkr.junlib.command.util;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
+
 /**
  * Created by JunHyeong Lim on 2019-01-20
  */
@@ -61,5 +65,15 @@ public class Reader<T> implements SimpleCollection<T> {
 
     public String getPreviousArguments() {
         return getPreviousArguments(0);
+    }
+
+    public SimpleCollection<T> getCollection() {
+        return collection;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return getCollection().iterator();
     }
 }

@@ -2,3 +2,4 @@ main: @main@
 name: @name@
 version: @version@
 author: @author@
+api-version: 1.14

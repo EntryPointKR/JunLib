@@ -3,8 +3,8 @@ package com.github.entrypointkr.junlib.bukkit.item;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Created by JunHyeong on 2018-11-03
+ * Created by JunHyeong on 2018-10-31
  */
-public interface ItemFactory {
-    ItemStack create();
+public interface ItemModifier {
+    void modify(ItemStack item);
 }

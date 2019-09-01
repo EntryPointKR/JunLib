@@ -2,7 +2,7 @@ package com.github.entrypointkr.junlib.bukkit.wizard;
 
 import com.github.entrypointkr.junlib.JunLibrary;
 import com.github.entrypointkr.junlib.bukkit.event.EventListener;
-import com.github.entrypointkr.junlib.bukkit.event.Events;
+import com.github.entrypointkr.junlib.bukkit.event.EventManager;
 import com.github.entrypointkr.junlib.bukkit.util.Runnables;
 import com.github.entrypointkr.junlib.wizard.Wizard;
 import org.bukkit.Bukkit;
@@ -22,6 +22,7 @@ import java.util.function.Consumer;
  */
 public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> implements Wizard<T> {
     private static final Map<String, BukkitWizard.Processor> notifierMap = new ConcurrentHashMap<>();
+    private final EventManager manager;
     private final EventPriority priority;
     private final Class<E> type;
     private final H human;
@@ -30,7 +31,8 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
     private final Runnable whenTimeout;
     private final boolean runOnMain;
 
-    public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenTimeout, boolean runOnMain) {
+    public BukkitWizard(EventManager manager, EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenTimeout, boolean runOnMain) {
+        this.manager = manager;
         this.priority = priority;
         this.type = type;
         this.human = human;
@@ -41,7 +43,7 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
     }
 
     public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick, Runnable whenTimeout) {
-        this(priority, type, human, cancel, timeoutTick, whenTimeout, true);
+        this(JunLibrary.get().getEventManager(), priority, type, human, cancel, timeoutTick, whenTimeout, true);
     }
 
     public BukkitWizard(EventPriority priority, Class<E> type, H human, boolean cancel, long timeoutTick) {
@@ -82,13 +84,13 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
             prev.cancel();
         }
         if (timeoutTick >= 0) {
-            processor.timeoutTask = Bukkit.getScheduler().runTaskLater(JunLibrary.getPlugin(),
+            processor.timeoutTask = Bukkit.getScheduler().runTaskLater(JunLibrary.get(),
                     () -> {
                         cancel(name);
                         whenTimeout.run();
                     }, timeoutTick);
         }
-        Events.registerListener(priority, processor);
+        manager.registerListener(priority, processor);
     }
 
     protected abstract void process(E event, Consumer<T> resultCallback);
@@ -115,7 +117,7 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
                 process(e, data -> {
                     BukkitWizard.cancel(getPlayer());
                     if (e.isAsynchronous() && runOnMain) {
-                        Bukkit.getScheduler().runTask(JunLibrary.getPlugin(), () -> consumer.accept(data));
+                        Bukkit.getScheduler().runTask(JunLibrary.get(), () -> consumer.accept(data));
                     } else {
                         consumer.accept(data);
                     }
@@ -130,7 +132,7 @@ public abstract class BukkitWizard<T, E extends Event, H extends HumanEntity> im
             if (timeoutTask != null) {
                 timeoutTask.cancel();
             }
-            Events.removeListener(this);
+            manager.removeListener(this);
         }
     }
 }

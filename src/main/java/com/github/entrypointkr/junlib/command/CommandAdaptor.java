@@ -1,5 +1,7 @@
 package com.github.entrypointkr.junlib.command;
 
+import com.github.entrypointkr.junlib.command.exception.ArgumentException;
+import com.github.entrypointkr.junlib.command.exception.CommandException;
 import com.github.entrypointkr.junlib.command.util.Reader;
 
 import java.util.Collections;
@@ -15,7 +17,7 @@ public class CommandAdaptor<T extends CommandSource> implements Command<T> {
     }
 
     private void fail(Argument<?> failedArgument) {
-        throw new ArgumentException(this, failedArgument);
+        throw new ArgumentException(failedArgument);
     }
 
     private Object parse(Reader<String> args, Argument<?> argument) {
@@ -26,13 +28,12 @@ public class CommandAdaptor<T extends CommandSource> implements Command<T> {
             }
             return parsed;
         } catch (ArgumentException ex) {
-            ex.setSource(this);
-            throw ex;
+            throw new CommandException(ex, this);
         }
     }
 
     @Override
-    public void execute(T receiver, Reader<String> args) {
+    public void execute(String label, T receiver, Reader<String> args) {
         CommandArguments argumentMap = new CommandArguments();
         if (arguments != null) {
             for (Argument<?> argument : arguments) {
@@ -43,8 +44,13 @@ public class CommandAdaptor<T extends CommandSource> implements Command<T> {
                         break;
                     }
                 }
+                int pos = args.getPosition();
                 Object parsed = parse(args, argument);
-                argumentMap.put(parsed, argument.getName());
+                if (parsed != null) {
+                    argumentMap.put(parsed, argument.getName());
+                } else {
+                    args.setPosition(pos);
+                }
             }
         }
         executor.execute(receiver, argumentMap);

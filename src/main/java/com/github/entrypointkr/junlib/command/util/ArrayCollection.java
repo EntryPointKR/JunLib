@@ -1,5 +1,10 @@
 package com.github.entrypointkr.junlib.command.util;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.Iterator;
+
 /**
  * Created by JunHyeong Lim on 2019-01-02
  */
@@ -26,5 +31,11 @@ public class ArrayCollection<T> implements SimpleCollection<T> {
     @Override
     public int size() {
         return array.length;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return Arrays.asList(array).iterator();
     }
 }

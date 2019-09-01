@@ -12,43 +12,59 @@ import java.util.Map;
  */
 @SerializableAs("JLPosition")
 public class Position implements ConfigurationSerializable {
-    private final double x;
-    private final double z;
+    private double x;
+    private double y;
 
-    private Position(double x, double z) {
+    private Position(double x, double y) {
         this.x = x;
-        this.z = z;
+        this.y = y;
     }
 
-    public Position(Map<String, Object> map) {
-        this(((double) map.get("x")), ((double) map.get("z")));
+    public static Position of(double x, double y) {
+        return new Position(x, y);
     }
 
-    public static Position of(double x, double z) {
-        return new Position(x, z);
+    public static Position of(Map<String, Object> map) {
+        return of(((Number) map.get("x")).doubleValue(), ((Number) map.get("y")).doubleValue());
     }
 
-    public static Position ofFloor(double x, double z) {
-        return new Position(Location.locToBlock(x), Location.locToBlock(z));
+    public static Position ofFloor(double x, double y) {
+        return of(Location.locToBlock(x), Location.locToBlock(y));
     }
 
     public double getX() {
         return x;
     }
 
-    public double getZ() {
-        return z;
+    public double getY() {
+        return y;
+    }
+
+    public Position setX(double x) {
+        this.x = x;
+        return this;
+    }
+
+    public Position setY(double y) {
+        this.y = y;
+        return this;
+    }
+
+    public Position add(double x, double y) {
+        this.x += x;
+        this.y += y;
+        return this;
     }
 
     public Position toFloor() {
-        return of(Location.locToBlock(x), Location.locToBlock(z));
+        return of(Location.locToBlock(x), Location.locToBlock(y));
     }
 
     @Override
     public Map<String, Object> serialize() {
         return ImmutableMap.<String, Object>builder()
                 .put("x", x)
-                .put("z", z)
+                .put("y", y)
                 .build();
     }
 }

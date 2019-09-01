@@ -6,6 +6,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -16,6 +18,7 @@ public class InventoryBuilder implements InventoryFactory {
     private int size;
     private String title;
     private ItemStack[] contents;
+    private int addPosition = 0;
 
     private InventoryBuilder(InventoryType type) {
         this.type = Objects.requireNonNull(type);
@@ -65,11 +68,24 @@ public class InventoryBuilder implements InventoryFactory {
     }
 
     public InventoryBuilder set(ItemStack item, int... indexes) {
-        ItemStack[] contents = getContents();
-        for (int index : indexes) {
-            contents[index] = item;
+        if (item != null) {
+            ItemStack[] contents = getContents();
+            for (int index : indexes) {
+                contents[index] = item;
+            }
         }
         return this;
+    }
+
+    public InventoryBuilder add(Collection<ItemStack> items) {
+        for (ItemStack item : items) {
+            set(item, addPosition++);
+        }
+        return this;
+    }
+
+    public InventoryBuilder add(ItemStack... items) {
+        return add(Arrays.asList(items));
     }
 
     public InventoryBuilder set(int row, int column, ItemStack item) {
@@ -84,6 +100,11 @@ public class InventoryBuilder implements InventoryFactory {
 
     public InventoryBuilder title(String title) {
         this.title = title;
+        return this;
+    }
+
+    public InventoryBuilder position(int addPosition) {
+        this.addPosition = addPosition;
         return this;
     }
 

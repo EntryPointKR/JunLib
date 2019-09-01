@@ -14,8 +14,8 @@ public class CompositeCommand<T extends CommandSource> implements Command<T> {
     }
 
     @Override
-    public void execute(T receiver, Reader<String> args) {
-        executor.execute(receiver, args);
+    public void execute(String label, T receiver, Reader<String> args) {
+        executor.execute(label, receiver, args);
     }
 
     @Override

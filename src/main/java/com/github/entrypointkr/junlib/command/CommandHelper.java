@@ -1,5 +1,6 @@
 package com.github.entrypointkr.junlib.command;
 
+import com.github.entrypointkr.junlib.command.exception.CommandException;
 import com.github.entrypointkr.junlib.command.util.Reader;
 
 /**

@@ -3,6 +3,7 @@ package com.github.entrypointkr.junlib.bukkit.util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
+import org.bukkit.entity.Damageable;
 import org.bukkit.plugin.SimplePluginManager;
 
 import java.lang.reflect.Field;
@@ -26,5 +27,10 @@ public class Bukkits {
 
     public static String colorize(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void setHealth(Damageable damageable, double health) {
+        damageable.setHealth(Math.max(Math.min(health, damageable.getMaxHealth()), 0));
     }
 }

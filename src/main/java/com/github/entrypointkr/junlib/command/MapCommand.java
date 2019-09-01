@@ -1,8 +1,15 @@
 package com.github.entrypointkr.junlib.command;
 
+import com.github.entrypointkr.junlib.command.exception.CommandException;
 import com.github.entrypointkr.junlib.command.util.Reader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -32,7 +39,7 @@ public class MapCommand<T extends CommandSource> implements Command<T>, Combined
             Map<String, Command<T>> commandMap,
             Map<Command<T>, List<String>> keyMap
     ) {
-        return of(commandMap, keyMap, (receiver, args) -> {
+        return of(commandMap, keyMap, (label, receiver, args) -> {
             throw new CommandException("명령어 도움말");
         });
     }
@@ -54,10 +61,10 @@ public class MapCommand<T extends CommandSource> implements Command<T>, Combined
     }
 
     @Override
-    public void execute(T receiver, Reader<String> args) {
+    public void execute(String label, T receiver, Reader<String> args) {
         Executable<T> executor = readExecutor(args);
         try {
-            executor.execute(receiver, args);
+            executor.execute(label, receiver, args);
         } catch (CommandException ex) {
             Executable source = ex.getSource();
             ex.setSource(source != null ? source : getSource(executor));

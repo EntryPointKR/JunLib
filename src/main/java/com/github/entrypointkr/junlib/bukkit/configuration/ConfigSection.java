@@ -8,6 +8,8 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -34,302 +36,350 @@ public class ConfigSection implements ConfigurationSection {
     }
 
     @Override
+    @NotNull
     public Set<String> getKeys(boolean deep) {
         return delegate.getKeys(deep);
     }
 
     @Override
+    @NotNull
     public Map<String, Object> getValues(boolean deep) {
         return delegate.getValues(deep);
     }
 
     @Override
-    public boolean contains(String path) {
+    public boolean contains(@NotNull String path) {
         return delegate.contains(path);
     }
 
     @Override
-    public boolean contains(String path, boolean ignoreDefault) {
+    public boolean contains(@NotNull String path, boolean ignoreDefault) {
         return delegate.contains(path, ignoreDefault);
     }
 
     @Override
-    public boolean isSet(String path) {
+    public boolean isSet(@NotNull String path) {
         return delegate.isSet(path);
     }
 
     @Override
+    @Nullable
     public String getCurrentPath() {
         return delegate.getCurrentPath();
     }
 
     @Override
+    @NotNull
     public String getName() {
         return delegate.getName();
     }
 
     @Override
+    @Nullable
     public Configuration getRoot() {
         return delegate.getRoot();
     }
 
     @Override
+    @Nullable
     public ConfigurationSection getParent() {
         return delegate.getParent();
     }
 
     @Override
-    public Object get(String path) {
+    @Nullable
+    public Object get(@NotNull String path) {
         return delegate.get(path);
     }
 
     @Override
-    public Object get(String path, Object def) {
+    @Nullable
+    public Object get(@NotNull String path, @Nullable Object def) {
         return delegate.get(path, def);
     }
 
     @Override
-    public void set(String path, Object value) {
+    public void set(@NotNull String path, @Nullable Object value) {
         delegate.set(path, value);
     }
 
     @Override
-    public ConfigurationSection createSection(String path) {
+    @NotNull
+    public ConfigurationSection createSection(@NotNull String path) {
         return delegate.createSection(path);
     }
 
     @Override
-    public ConfigurationSection createSection(String path, Map<?, ?> map) {
+    @NotNull
+    public ConfigurationSection createSection(@NotNull String path, @NotNull Map<?, ?> map) {
         return delegate.createSection(path, map);
     }
 
     @Override
-    public String getString(String path) {
+    @Nullable
+    public String getString(@NotNull String path) {
         return delegate.getString(path);
     }
 
     @Override
-    public String getString(String path, String def) {
+    @Nullable
+    public String getString(@NotNull String path, @Nullable String def) {
         return delegate.getString(path, def);
     }
 
     @Override
-    public boolean isString(String path) {
+    public boolean isString(@NotNull String path) {
         return delegate.isString(path);
     }
 
     @Override
-    public int getInt(String path) {
+    public int getInt(@NotNull String path) {
         return delegate.getInt(path);
     }
 
     @Override
-    public int getInt(String path, int def) {
+    public int getInt(@NotNull String path, int def) {
         return delegate.getInt(path, def);
     }
 
     @Override
-    public boolean isInt(String path) {
+    public boolean isInt(@NotNull String path) {
         return delegate.isInt(path);
     }
 
     @Override
-    public boolean getBoolean(String path) {
+    public boolean getBoolean(@NotNull String path) {
         return delegate.getBoolean(path);
     }
 
     @Override
-    public boolean getBoolean(String path, boolean def) {
+    public boolean getBoolean(@NotNull String path, boolean def) {
         return delegate.getBoolean(path, def);
     }
 
     @Override
-    public boolean isBoolean(String path) {
+    public boolean isBoolean(@NotNull String path) {
         return delegate.isBoolean(path);
     }
 
     @Override
-    public double getDouble(String path) {
+    public double getDouble(@NotNull String path) {
         return delegate.getDouble(path);
     }
 
     @Override
-    public double getDouble(String path, double def) {
+    public double getDouble(@NotNull String path, double def) {
         return delegate.getDouble(path, def);
     }
 
     @Override
-    public boolean isDouble(String path) {
+    public boolean isDouble(@NotNull String path) {
         return delegate.isDouble(path);
     }
 
     @Override
-    public long getLong(String path) {
+    public long getLong(@NotNull String path) {
         return delegate.getLong(path);
     }
 
     @Override
-    public long getLong(String path, long def) {
+    public long getLong(@NotNull String path, long def) {
         return delegate.getLong(path, def);
     }
 
     @Override
-    public boolean isLong(String path) {
+    public boolean isLong(@NotNull String path) {
         return delegate.isLong(path);
     }
 
     @Override
-    public List<?> getList(String path) {
+    @Nullable
+    public List<?> getList(@NotNull String path) {
         return delegate.getList(path);
     }
 
     @Override
-    public List<?> getList(String path, List<?> def) {
+    @Nullable
+    public List<?> getList(@NotNull String path, @Nullable List<?> def) {
         return delegate.getList(path, def);
     }
 
     @Override
-    public boolean isList(String path) {
+    public boolean isList(@NotNull String path) {
         return delegate.isList(path);
     }
 
     @Override
-    public List<String> getStringList(String path) {
+    @NotNull
+    public List<String> getStringList(@NotNull String path) {
         return delegate.getStringList(path);
     }
 
     @Override
-    public List<Integer> getIntegerList(String path) {
+    @NotNull
+    public List<Integer> getIntegerList(@NotNull String path) {
         return delegate.getIntegerList(path);
     }
 
     @Override
-    public List<Boolean> getBooleanList(String path) {
+    @NotNull
+    public List<Boolean> getBooleanList(@NotNull String path) {
         return delegate.getBooleanList(path);
     }
 
     @Override
-    public List<Double> getDoubleList(String path) {
+    @NotNull
+    public List<Double> getDoubleList(@NotNull String path) {
         return delegate.getDoubleList(path);
     }
 
     @Override
-    public List<Float> getFloatList(String path) {
+    @NotNull
+    public List<Float> getFloatList(@NotNull String path) {
         return delegate.getFloatList(path);
     }
 
     @Override
-    public List<Long> getLongList(String path) {
+    @NotNull
+    public List<Long> getLongList(@NotNull String path) {
         return delegate.getLongList(path);
     }
 
     @Override
-    public List<Byte> getByteList(String path) {
+    @NotNull
+    public List<Byte> getByteList(@NotNull String path) {
         return delegate.getByteList(path);
     }
 
     @Override
-    public List<Character> getCharacterList(String path) {
+    @NotNull
+    public List<Character> getCharacterList(@NotNull String path) {
         return delegate.getCharacterList(path);
     }
 
     @Override
-    public List<Short> getShortList(String path) {
+    @NotNull
+    public List<Short> getShortList(@NotNull String path) {
         return delegate.getShortList(path);
     }
 
     @Override
-    public List<Map<?, ?>> getMapList(String path) {
+    @NotNull
+    public List<Map<?, ?>> getMapList(@NotNull String path) {
         return delegate.getMapList(path);
     }
 
     @Override
-    public <T extends ConfigurationSerializable> T getSerializable(String path, Class<T> clazz) {
+    @Nullable
+    public <T> T getObject(@NotNull String path, @NotNull Class<T> clazz) {
+        return delegate.getObject(path, clazz);
+    }
+
+    @Override
+    @Nullable
+    public <T> T getObject(@NotNull String path, @NotNull Class<T> clazz, @Nullable T def) {
+        return delegate.getObject(path, clazz, def);
+    }
+
+    @Override
+    @Nullable
+    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz) {
         return delegate.getSerializable(path, clazz);
     }
 
     @Override
-    public <T extends ConfigurationSerializable> T getSerializable(String path, Class<T> clazz, T def) {
+    @Nullable
+    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz, @Nullable T def) {
         return delegate.getSerializable(path, clazz, def);
     }
 
     @Override
-    public Vector getVector(String path) {
+    @Nullable
+    public Vector getVector(@NotNull String path) {
         return delegate.getVector(path);
     }
 
     @Override
-    public Vector getVector(String path, Vector def) {
+    @Nullable
+    public Vector getVector(@NotNull String path, @Nullable Vector def) {
         return delegate.getVector(path, def);
     }
 
     @Override
-    public boolean isVector(String path) {
+    public boolean isVector(@NotNull String path) {
         return delegate.isVector(path);
     }
 
     @Override
-    public OfflinePlayer getOfflinePlayer(String path) {
+    @Nullable
+    public OfflinePlayer getOfflinePlayer(@NotNull String path) {
         return delegate.getOfflinePlayer(path);
     }
 
     @Override
-    public OfflinePlayer getOfflinePlayer(String path, OfflinePlayer def) {
+    @Nullable
+    public OfflinePlayer getOfflinePlayer(@NotNull String path, @Nullable OfflinePlayer def) {
         return delegate.getOfflinePlayer(path, def);
     }
 
     @Override
-    public boolean isOfflinePlayer(String path) {
+    public boolean isOfflinePlayer(@NotNull String path) {
         return delegate.isOfflinePlayer(path);
     }
 
     @Override
-    public ItemStack getItemStack(String path) {
+    @Nullable
+    public ItemStack getItemStack(@NotNull String path) {
         return delegate.getItemStack(path);
     }
 
     @Override
-    public ItemStack getItemStack(String path, ItemStack def) {
+    @Nullable
+    public ItemStack getItemStack(@NotNull String path, @Nullable ItemStack def) {
         return delegate.getItemStack(path, def);
     }
 
     @Override
-    public boolean isItemStack(String path) {
+    public boolean isItemStack(@NotNull String path) {
         return delegate.isItemStack(path);
     }
 
     @Override
-    public Color getColor(String path) {
+    @Nullable
+    public Color getColor(@NotNull String path) {
         return delegate.getColor(path);
     }
 
     @Override
-    public Color getColor(String path, Color def) {
+    @Nullable
+    public Color getColor(@NotNull String path, @Nullable Color def) {
         return delegate.getColor(path, def);
     }
 
     @Override
-    public boolean isColor(String path) {
+    public boolean isColor(@NotNull String path) {
         return delegate.isColor(path);
     }
 
     @Override
-    public ConfigurationSection getConfigurationSection(String path) {
+    @Nullable
+    public ConfigurationSection getConfigurationSection(@NotNull String path) {
         return delegate.getConfigurationSection(path);
     }
 
     @Override
-    public boolean isConfigurationSection(String path) {
+    public boolean isConfigurationSection(@NotNull String path) {
         return delegate.isConfigurationSection(path);
     }
 
     @Override
+    @Nullable
     public ConfigurationSection getDefaultSection() {
         return delegate.getDefaultSection();
     }
 
     @Override
-    public void addDefault(String path, Object value) {
+    public void addDefault(@NotNull String path, @Nullable Object value) {
         delegate.addDefault(path, value);
     }
 }

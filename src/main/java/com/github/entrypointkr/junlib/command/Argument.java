@@ -1,7 +1,10 @@
 package com.github.entrypointkr.junlib.command;
 
+import com.github.entrypointkr.junlib.command.exception.ArgumentException;
 import com.github.entrypointkr.junlib.command.util.Reader;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -40,6 +43,11 @@ public class Argument<T> {
                 .message(p -> p + " 는 존재하지 않는 플레이어입니다.");
     }
 
+    public static Argument<OfflinePlayer> offlinePlayer(String name) {
+        return new Argument<>(name, reader -> Bukkit.getOfflinePlayer(reader.read()))
+                .message(p -> p + " 는 존재하지 않는 플레이어입니다.");
+    }
+
     public static Argument<World> world(String name) {
         return new Argument<>(name, reader -> Bukkit.getWorld(reader.read()))
                 .message(w -> w + " 는 존재하지 않는 월드입니다.");
@@ -62,6 +70,16 @@ public class Argument<T> {
         return new Argument<>(name, reader -> {
             try {
                 return Boolean.parseBoolean(reader.read());
+            } catch (Exception ex) {
+                return null;
+            }
+        });
+    }
+
+    public static Argument<Number> number(String name) {
+        return new Argument<>(name, reader -> {
+            try {
+                return NumberUtils.createNumber(reader.read());
             } catch (Exception ex) {
                 return null;
             }

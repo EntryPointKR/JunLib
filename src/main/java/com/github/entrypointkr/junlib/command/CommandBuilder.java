@@ -2,9 +2,10 @@ package com.github.entrypointkr.junlib.command;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class CommandBuilder<T extends CommandSource> {
-    private String description;
+    private Supplier<String> description;
     private String permission;
     private CommandExecutor<T> executable;
     private Argument<?>[] arguments;
@@ -19,9 +20,13 @@ public class CommandBuilder<T extends CommandSource> {
         return of();
     }
 
-    public CommandBuilder<T> desc(String description) {
-        this.description = description;
+    public CommandBuilder<T> desc(Supplier<String> desc) {
+        this.description = desc;
         return this;
+    }
+
+    public CommandBuilder<T> desc(String description) {
+        return desc(() -> description);
     }
 
     public CommandBuilder<T> perm(String permission) {
@@ -62,7 +67,7 @@ public class CommandBuilder<T extends CommandSource> {
         } else {
             MapCommand<T> mapCommand = MapCommand.of(new LinkedHashMap<>(commandMap));
             if (executable != null) {
-                mapCommand.defaultExecutor((receiver, args) -> {
+                mapCommand.defaultExecutor((label, receiver, args) -> {
                     CommandArguments arguments = new CommandArguments();
                     int prev = args.getPosition();
                     int index = 0;

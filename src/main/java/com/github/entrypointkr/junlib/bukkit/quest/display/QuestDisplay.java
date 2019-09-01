@@ -1,7 +1,7 @@
 package com.github.entrypointkr.junlib.bukkit.quest.display;
 
 import com.github.entrypointkr.junlib.bukkit.item.ItemBuilder;
-import com.github.entrypointkr.junlib.bukkit.item.SimpleMeta;
+import com.github.entrypointkr.junlib.bukkit.item.Meta;
 import com.github.entrypointkr.junlib.bukkit.quest.Quest;
 import com.github.entrypointkr.junlib.bukkit.quest.QuestDisplayFactory;
 import org.bukkit.Material;
@@ -12,7 +12,7 @@ public class QuestDisplay implements QuestDisplayFactory {
     public ItemStack create(Quest quest) {
         String name = quest.getName();
         String description = quest.getDescription();
-        SimpleMeta meta = new SimpleMeta().display(name);
+        Meta meta = Meta.of().display(name);
         int limit = 15;
         int remain = description.length() % limit;
         int count = description.length() / limit;
@@ -25,6 +25,7 @@ public class QuestDisplay implements QuestDisplayFactory {
             meta.lore(description.substring(start, end));
         }
         return ItemBuilder.of(Material.DIAMOND_SWORD)
-                .create(meta);
+                .meta(meta)
+                .create();
     }
 }

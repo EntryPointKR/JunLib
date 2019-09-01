@@ -13,17 +13,21 @@ import java.util.List;
 public class CombinedHandler implements GUIHandler<InventoryEvent> {
     private final List<GUIHandler<InventoryEvent>> listeners;
 
-    public CombinedHandler(List<GUIHandler<InventoryEvent>> listeners) {
+    private CombinedHandler(List<GUIHandler<InventoryEvent>> listeners) {
         this.listeners = listeners;
     }
 
-    @SafeVarargs
-    public CombinedHandler(GUIHandler<InventoryEvent>... listeners) {
-        this(new ArrayList<>(Arrays.asList(listeners)));
+    public static CombinedHandler of(List<GUIHandler<InventoryEvent>> handlers) {
+        return new CombinedHandler(handlers);
     }
 
-    public CombinedHandler() {
-        this(new ArrayList<>());
+    @SafeVarargs
+    public static CombinedHandler of(GUIHandler<InventoryEvent>... listeners) {
+        return of(new ArrayList<>(Arrays.asList(listeners)));
+    }
+
+    public static CombinedHandler of() {
+        return of(new ArrayList<>());
     }
 
     @Override

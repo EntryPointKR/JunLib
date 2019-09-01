@@ -27,10 +27,7 @@ public class BukkitCommandAdaptor extends Command implements PluginIdentifiableC
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (command instanceof HelperCommand) {
-            ((HelperCommand<BukkitSource>) command).setLabel(commandLabel);
-        }
-        command.execute(new BukkitSource(sender), new Reader<>(ArrayCollection.of(args)));
+        command.execute(commandLabel, new BukkitSource(sender), new Reader<>(ArrayCollection.of(args)));
         return true;
     }
 

@@ -13,7 +13,7 @@ public class PrintCommand implements Command<CommandSource> {
     }
 
     @Override
-    public void execute(CommandSource receiver, Reader<String> args) {
+    public void execute(String label, CommandSource receiver, Reader<String> args) {
         System.out.println(message);
     }
 }

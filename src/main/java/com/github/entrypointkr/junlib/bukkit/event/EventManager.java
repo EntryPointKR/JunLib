@@ -19,13 +19,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by JunHyeong on 2018-10-29
+ * Created by JunHyeong Lim on 2019-05-17
  */
-public class Events {
-    private static final Map<EventPriority, Set<EventListener<Event>>> listeners = Collections.synchronizedMap(new EnumMap<>(EventPriority.class));
+public class EventManager {
+    private final Map<EventPriority, Set<EventListener<Event>>> listeners = Collections.synchronizedMap(new EnumMap<>(EventPriority.class));
 
     @SuppressWarnings("unchecked")
-    public static void inject(Plugin plugin) {
+    public void inject(Plugin plugin) {
         try {
             Field field = HandlerList.class.getDeclaredField("allLists");
             field.setAccessible(true);
@@ -33,27 +33,26 @@ public class Events {
             ArrayList<HandlerList> newHandlers = new ArrayListHook(plugin);
             newHandlers.addAll(handlers);
             field.set(null, newHandlers);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        } catch (Exception ex) {
+            throw new IllegalStateException(ex);
         }
     }
 
-    public static Set<EventListener<Event>> getListeners(EventPriority priority) {
+    public Set<EventListener<Event>> getListeners(EventPriority priority) {
         return listeners.computeIfAbsent(priority, k -> Collections.newSetFromMap(new ConcurrentHashMap<>()));
     }
 
-    @SafeVarargs
-    public static void registerListener(EventPriority priority, EventListener<Event>... listeners) {
+    public void registerListener(EventPriority priority, EventListener<Event>... listeners) {
         getListeners(priority).addAll(Arrays.asList(listeners));
     }
 
-    public static void removeListener(EventListener... listeners) {
-        for (Set<EventListener<Event>> value : Events.listeners.values()) {
+    public void removeListener(EventListener... listeners) {
+        for (Set<EventListener<Event>> value : this.listeners.values()) {
             value.removeAll(Arrays.asList(listeners));
         }
     }
 
-    static class ArrayListHook extends ArrayList<HandlerList> {
+    class ArrayListHook extends ArrayList<HandlerList> {
         private final Plugin plugin;
 
         public ArrayListHook(Plugin plugin) {
@@ -77,8 +76,7 @@ public class Events {
         }
     }
 
-    static class Notifier extends RegisteredListener {
-
+    class Notifier extends RegisteredListener {
         Notifier(EventPriority priority, Plugin plugin) {
             super(new Listener() {
             }, null, priority, plugin, false);

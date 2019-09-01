@@ -1,12 +1,26 @@
 package com.github.entrypointkr.junlib.mock;
 
-import org.bukkit.*;
+import org.bukkit.BanList;
+import org.bukkit.GameMode;
+import org.bukkit.Keyed;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
+import org.bukkit.StructureType;
+import org.bukkit.Tag;
+import org.bukkit.UnsafeValues;
+import org.bukkit.Warning;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -16,7 +30,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.help.HelpMap;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Merchant;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.loot.LootTable;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
@@ -26,10 +45,17 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.CachedServerIcon;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -40,21 +66,25 @@ public class MockServer implements Server {
         this.pluginManager = pluginManager;
     }
 
+    @NotNull
     @Override
     public String getName() {
         return null;
     }
 
+    @NotNull
     @Override
     public String getVersion() {
         return null;
     }
 
+    @NotNull
     @Override
     public String getBukkitVersion() {
         return null;
     }
 
+    @NotNull
     @Override
     public Collection<? extends Player> getOnlinePlayers() {
         return null;
@@ -75,21 +105,13 @@ public class MockServer implements Server {
         return 0;
     }
 
+    @NotNull
     @Override
     public String getIp() {
         return null;
     }
 
-    @Override
-    public String getServerName() {
-        return null;
-    }
-
-    @Override
-    public String getServerId() {
-        return null;
-    }
-
+    @NotNull
     @Override
     public String getWorldType() {
         return null;
@@ -120,6 +142,7 @@ public class MockServer implements Server {
 
     }
 
+    @NotNull
     @Override
     public Set<OfflinePlayer> getWhitelistedPlayers() {
         return null;
@@ -131,15 +154,17 @@ public class MockServer implements Server {
     }
 
     @Override
-    public int broadcastMessage(String message) {
+    public int broadcastMessage(@NotNull String message) {
         return 0;
     }
 
+    @NotNull
     @Override
     public String getUpdateFolder() {
         return null;
     }
 
+    @NotNull
     @Override
     public File getUpdateFolderFile() {
         return null;
@@ -160,88 +185,103 @@ public class MockServer implements Server {
         return 0;
     }
 
+    @Nullable
     @Override
-    public Player getPlayer(String name) {
+    public Player getPlayer(@NotNull String name) {
         return null;
     }
 
+    @Nullable
     @Override
-    public Player getPlayerExact(String name) {
+    public Player getPlayerExact(@NotNull String name) {
         return null;
     }
 
+    @NotNull
     @Override
-    public List<Player> matchPlayer(String name) {
+    public List<Player> matchPlayer(@NotNull String name) {
         return null;
     }
 
+    @Nullable
     @Override
-    public Player getPlayer(UUID id) {
+    public Player getPlayer(@NotNull UUID id) {
         return null;
     }
 
+    @NotNull
     @Override
     public PluginManager getPluginManager() {
         return pluginManager;
     }
 
+    @NotNull
     @Override
     public BukkitScheduler getScheduler() {
         return null;
     }
 
+    @NotNull
     @Override
     public ServicesManager getServicesManager() {
         return null;
     }
 
+    @NotNull
     @Override
     public List<World> getWorlds() {
         return null;
     }
 
+    @Nullable
     @Override
-    public World createWorld(WorldCreator creator) {
+    public World createWorld(@NotNull WorldCreator creator) {
         return null;
     }
 
     @Override
-    public boolean unloadWorld(String name, boolean save) {
+    public boolean unloadWorld(@NotNull String name, boolean save) {
         return false;
     }
 
     @Override
-    public boolean unloadWorld(World world, boolean save) {
+    public boolean unloadWorld(@NotNull World world, boolean save) {
         return false;
     }
 
+    @Nullable
     @Override
-    public World getWorld(String name) {
+    public World getWorld(@NotNull String name) {
         return null;
     }
 
+    @Nullable
     @Override
-    public World getWorld(UUID uid) {
+    public World getWorld(@NotNull UUID uid) {
         return null;
     }
 
+    @Nullable
     @Override
-    public MapView getMap(short id) {
+    public MapView getMap(int id) {
         return null;
     }
 
+    @NotNull
     @Override
-    public MapView createMap(World world) {
+    public MapView createMap(@NotNull World world) {
         return null;
     }
 
+    @NotNull
     @Override
-    public ItemStack createExplorerMap(World world, Location location, StructureType structureType) {
+    public ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType) {
         return null;
     }
 
+    @NotNull
     @Override
-    public ItemStack createExplorerMap(World world, Location location, StructureType structureType, int radius, boolean findUnexplored) {
+    public ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType, int radius, boolean findUnexplored) {
         return null;
     }
 
@@ -255,13 +295,15 @@ public class MockServer implements Server {
 
     }
 
+    @NotNull
     @Override
     public Logger getLogger() {
         return null;
     }
 
+    @Nullable
     @Override
-    public PluginCommand getPluginCommand(String name) {
+    public PluginCommand getPluginCommand(@NotNull String name) {
         return null;
     }
 
@@ -271,20 +313,22 @@ public class MockServer implements Server {
     }
 
     @Override
-    public boolean dispatchCommand(CommandSender sender, String commandLine) throws CommandException {
+    public boolean dispatchCommand(@NotNull CommandSender sender, @NotNull String commandLine) throws CommandException {
         return false;
     }
 
     @Override
-    public boolean addRecipe(Recipe recipe) {
+    public boolean addRecipe(@Nullable Recipe recipe) {
         return false;
     }
 
+    @NotNull
     @Override
-    public List<Recipe> getRecipesFor(ItemStack result) {
+    public List<Recipe> getRecipesFor(@NotNull ItemStack result) {
         return null;
     }
 
+    @NotNull
     @Override
     public Iterator<Recipe> recipeIterator() {
         return null;
@@ -300,6 +344,7 @@ public class MockServer implements Server {
 
     }
 
+    @NotNull
     @Override
     public Map<String, String[]> getCommandAliases() {
         return null;
@@ -336,107 +381,124 @@ public class MockServer implements Server {
     }
 
     @Override
-    public int broadcast(String message, String permission) {
+    public int broadcast(@NotNull String message, @NotNull String permission) {
         return 0;
     }
 
+    @NotNull
     @Override
-    public OfflinePlayer getOfflinePlayer(String name) {
+    public OfflinePlayer getOfflinePlayer(@NotNull String name) {
         return null;
     }
 
+    @NotNull
     @Override
-    public OfflinePlayer getOfflinePlayer(UUID id) {
+    public OfflinePlayer getOfflinePlayer(@NotNull UUID id) {
         return null;
     }
 
+    @NotNull
     @Override
     public Set<String> getIPBans() {
         return null;
     }
 
     @Override
-    public void banIP(String address) {
+    public void banIP(@NotNull String address) {
 
     }
 
     @Override
-    public void unbanIP(String address) {
+    public void unbanIP(@NotNull String address) {
 
     }
 
+    @NotNull
     @Override
     public Set<OfflinePlayer> getBannedPlayers() {
         return null;
     }
 
+    @NotNull
     @Override
-    public BanList getBanList(BanList.Type type) {
+    public BanList getBanList(@NotNull BanList.Type type) {
         return null;
     }
 
+    @NotNull
     @Override
     public Set<OfflinePlayer> getOperators() {
         return null;
     }
 
+    @NotNull
     @Override
     public GameMode getDefaultGameMode() {
         return null;
     }
 
     @Override
-    public void setDefaultGameMode(GameMode mode) {
+    public void setDefaultGameMode(@NotNull GameMode mode) {
 
     }
 
+    @NotNull
     @Override
     public ConsoleCommandSender getConsoleSender() {
         return null;
     }
 
+    @NotNull
     @Override
     public File getWorldContainer() {
         return null;
     }
 
+    @NotNull
     @Override
     public OfflinePlayer[] getOfflinePlayers() {
         return new OfflinePlayer[0];
     }
 
+    @NotNull
     @Override
     public Messenger getMessenger() {
         return null;
     }
 
+    @NotNull
     @Override
     public HelpMap getHelpMap() {
         return null;
     }
 
+    @NotNull
     @Override
-    public Inventory createInventory(InventoryHolder owner, InventoryType type) {
+    public Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type) {
         return null;
     }
 
+    @NotNull
     @Override
-    public Inventory createInventory(InventoryHolder owner, InventoryType type, String title) {
+    public Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull String title) {
         return null;
     }
 
+    @NotNull
     @Override
-    public Inventory createInventory(InventoryHolder owner, int size) throws IllegalArgumentException {
+    public Inventory createInventory(@Nullable InventoryHolder owner, int size) throws IllegalArgumentException {
         return null;
     }
 
+    @NotNull
     @Override
-    public Inventory createInventory(InventoryHolder owner, int size, String title) throws IllegalArgumentException {
+    public Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException {
         return null;
     }
 
+    @NotNull
     @Override
-    public Merchant createMerchant(String title) {
+    public Merchant createMerchant(@Nullable String title) {
         return null;
     }
 
@@ -465,43 +527,51 @@ public class MockServer implements Server {
         return false;
     }
 
+    @NotNull
     @Override
     public String getMotd() {
         return null;
     }
 
+    @Nullable
     @Override
     public String getShutdownMessage() {
         return null;
     }
 
+    @NotNull
     @Override
     public Warning.WarningState getWarningState() {
         return null;
     }
 
+    @NotNull
     @Override
     public ItemFactory getItemFactory() {
         return null;
     }
 
+    @Nullable
     @Override
     public ScoreboardManager getScoreboardManager() {
         return null;
     }
 
+    @Nullable
     @Override
     public CachedServerIcon getServerIcon() {
         return null;
     }
 
+    @NotNull
     @Override
-    public CachedServerIcon loadServerIcon(File file) throws IllegalArgumentException, Exception {
+    public CachedServerIcon loadServerIcon(@NotNull File file) throws IllegalArgumentException, Exception {
         return null;
     }
 
+    @NotNull
     @Override
-    public CachedServerIcon loadServerIcon(BufferedImage image) throws IllegalArgumentException, Exception {
+    public CachedServerIcon loadServerIcon(@NotNull BufferedImage image) throws IllegalArgumentException, Exception {
         return null;
     }
 
@@ -515,76 +585,125 @@ public class MockServer implements Server {
         return 0;
     }
 
+    @NotNull
     @Override
-    public ChunkGenerator.ChunkData createChunkData(World world) {
+    public ChunkGenerator.ChunkData createChunkData(@NotNull World world) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public BossBar createBossBar(@Nullable String title, @NotNull BarColor color, @NotNull BarStyle style, @NotNull BarFlag... flags) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public KeyedBossBar createBossBar(@NotNull NamespacedKey key, @Nullable String title, @NotNull BarColor color, @NotNull BarStyle style, @NotNull BarFlag... flags) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<KeyedBossBar> getBossBars() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public KeyedBossBar getBossBar(@NotNull NamespacedKey key) {
         return null;
     }
 
     @Override
-    public BossBar createBossBar(String title, BarColor color, BarStyle style, BarFlag... flags) {
-        return null;
+    public boolean removeBossBar(@NotNull NamespacedKey key) {
+        return false;
     }
 
+    @Nullable
     @Override
-    public Entity getEntity(UUID uuid) {
+    public Entity getEntity(@NotNull UUID uuid) {
         return null;
     }
 
+    @Nullable
     @Override
-    public Advancement getAdvancement(NamespacedKey key) {
+    public Advancement getAdvancement(@NotNull NamespacedKey key) {
         return null;
     }
 
+    @NotNull
     @Override
     public Iterator<Advancement> advancementIterator() {
         return null;
     }
 
+    @NotNull
     @Override
-    public BlockData createBlockData(Material material) {
+    public BlockData createBlockData(@NotNull Material material) {
         return null;
     }
 
+    @NotNull
     @Override
-    public BlockData createBlockData(Material material, Consumer<BlockData> consumer) {
+    public BlockData createBlockData(@NotNull Material material, @Nullable Consumer<BlockData> consumer) {
         return null;
     }
 
+    @NotNull
     @Override
-    public BlockData createBlockData(String data) throws IllegalArgumentException {
+    public BlockData createBlockData(@NotNull String data) throws IllegalArgumentException {
         return null;
     }
 
+    @NotNull
     @Override
-    public BlockData createBlockData(Material material, String data) throws IllegalArgumentException {
+    public BlockData createBlockData(@Nullable Material material, @Nullable String data) throws IllegalArgumentException {
         return null;
     }
 
+    @Nullable
     @Override
-    public <T extends Keyed> Tag<T> getTag(String registry, NamespacedKey tag, Class<T> clazz) {
+    public <T extends Keyed> Tag<T> getTag(@NotNull String registry, @NotNull NamespacedKey tag, @NotNull Class<T> clazz) {
         return null;
     }
 
+    @NotNull
     @Override
-    public LootTable getLootTable(NamespacedKey key) {
+    public <T extends Keyed> Iterable<Tag<T>> getTags(@NotNull String registry, @NotNull Class<T> clazz) {
         return null;
     }
 
+    @Nullable
+    @Override
+    public LootTable getLootTable(@NotNull NamespacedKey key) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public List<Entity> selectEntities(@NotNull CommandSender sender, @NotNull String selector) throws IllegalArgumentException {
+        return null;
+    }
+
+    @NotNull
     @Override
     public UnsafeValues getUnsafe() {
         return null;
     }
 
+    @NotNull
     @Override
     public Spigot spigot() {
         return null;
     }
 
     @Override
-    public void sendPluginMessage(Plugin source, String channel, byte[] message) {
+    public void sendPluginMessage(@NotNull Plugin source, @NotNull String channel, @NotNull byte[] message) {
 
     }
 
+    @NotNull
     @Override
     public Set<String> getListeningPluginChannels() {
         return null;

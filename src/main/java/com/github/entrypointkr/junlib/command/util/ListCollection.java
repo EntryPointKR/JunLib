@@ -1,5 +1,8 @@
 package com.github.entrypointkr.junlib.command.util;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,5 +23,11 @@ public class ListCollection<T> implements SimpleCollection<T> {
     @Override
     public int size() {
         return list.size();
+    }
+
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return list.iterator();
     }
 }

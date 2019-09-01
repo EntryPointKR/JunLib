@@ -50,7 +50,7 @@ public class Region implements ConfigurationSerializable {
         double z = loc.getBlockZ();
         return world.equals(loc.getWorld().getName())
                 && x >= min.getX() && x <= max.getX()
-                && z >= min.getZ() && z <= max.getZ();
+                && z >= min.getY() && z <= max.getY();
     }
 
     public boolean isIn(Entity entity) {

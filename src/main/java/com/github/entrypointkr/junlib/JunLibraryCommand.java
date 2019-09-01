@@ -1,7 +1,6 @@
 package com.github.entrypointkr.junlib;
 
 import com.github.entrypointkr.junlib.bukkit.event.listener.EventSkipper;
-import com.github.entrypointkr.junlib.bukkit.event.listener.GUIParent;
 import com.github.entrypointkr.junlib.bukkit.gui.GUI;
 import com.github.entrypointkr.junlib.bukkit.gui.component.PaginationComponent;
 import com.github.entrypointkr.junlib.bukkit.gui.handler.CancelHandler;
@@ -10,9 +9,13 @@ import com.github.entrypointkr.junlib.bukkit.gui.handler.CombinedHandler;
 import com.github.entrypointkr.junlib.bukkit.inventory.InventoryBuilder;
 import com.github.entrypointkr.junlib.bukkit.item.ItemBuilder;
 import com.github.entrypointkr.junlib.bukkit.item.ItemWrapper;
-import com.github.entrypointkr.junlib.bukkit.item.SimpleMeta;
+import com.github.entrypointkr.junlib.bukkit.item.Meta;
 import com.github.entrypointkr.junlib.bukkit.wizard.ChatWizard;
-import com.github.entrypointkr.junlib.command.*;
+import com.github.entrypointkr.junlib.command.Argument;
+import com.github.entrypointkr.junlib.command.BukkitSource;
+import com.github.entrypointkr.junlib.command.Command;
+import com.github.entrypointkr.junlib.command.CommandBuilder;
+import com.github.entrypointkr.junlib.command.exception.CommandException;
 import com.github.entrypointkr.junlib.util.FileUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,12 +36,49 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class JunLibraryCommand {
+    public static void main(String[] args) {
+        int total = 0;
+        String str = "testStr";
+        for (int i = 0; i < 1000; i++) {
+            long time = System.currentTimeMillis();
+            switch (str) {
+                case "testStr":
+
+            }
+            total += System.currentTimeMillis() - time;
+        }
+        System.out.println("Switch: " + total);
+        total = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            long time = System.currentTimeMillis();
+            switch (str) {
+                case "testStr":
+
+            }
+            total += System.currentTimeMillis() - time;
+        }
+        System.out.println("Switch: " + total);
+        total = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            long time = System.currentTimeMillis();
+            if (str.equals("testStr")) {
+
+            }
+            total += System.currentTimeMillis() - time;
+        }
+        System.out.println("If: " + total);
+        total = 0;
+    }
+
     public static void register(Plugin plugin) {
         Command<BukkitSource> healCommand = CommandBuilder.ofBukkit()
                 .perm("junlibrary.heal")
                 .executor((sender, args) -> {
                     Player player = sender.toPlayer();
                     player.setHealth(player.getMaxHealth());
+                    player.setFoodLevel(20);
                     player.sendMessage("Done.");
                 })
                 .build();
@@ -80,13 +120,12 @@ public class JunLibraryCommand {
                     Player player = sender.toPlayer();
                     InventoryBuilder builder = InventoryBuilder.ofChest("JunLibrary GUI Demo", 3)
                             .set(1, 4, new ItemStack(Material.DIRT));
-                    CombinedHandler handler = new CombinedHandler()
-                            .add(
-                                    CancelHandler.TOP,
-                                    new ClickHandler().put(1, 4, (gui1, e) ->
-                                            e.getView().getPlayer().sendMessage("Clicked!"))
-                            );
-                    new GUI(player, builder, handler).open();
+                    CombinedHandler handler = CombinedHandler.of(
+                            CancelHandler.TOP,
+                            new ClickHandler().put(1, 4, (gui1, e) ->
+                                    e.getView().getPlayer().sendMessage("Clicked!"))
+                    );
+                    GUI.of(builder, handler).open(player);
                 })
                 .build();
         Command<BukkitSource> paginationGuiDemo = CommandBuilder.ofBukkit()
@@ -97,29 +136,30 @@ public class JunLibraryCommand {
                     ClickHandler handler = new ClickHandler();
                     for (int i = 0; i < 50; i++) {
                         ItemStack item = ItemBuilder.of(Material.DIRT)
-                                .create(new SimpleMeta().name("#" + i));
+                                .meta(Meta.of().name("#" + i))
+                                .create();
                         items.add(item);
                         handler.put((_gui, e) -> {
                             ClickHandler clickHandler = new ClickHandler();
                             InventoryBuilder builder = InventoryBuilder.ofChest("JunLibrary Pagination Sub Demo", 3)
                                     .set(1, 4, item);
-                            EventSkipper skipper = new EventSkipper(new GUIParent(new CombinedHandler().add(CancelHandler.TOP, clickHandler), _gui));
-                            GUI gui = new GUI(player, builder, skipper);
+                            EventSkipper skipper = EventSkipper.ofParent(_gui, player, CombinedHandler.of(CancelHandler.TOP, clickHandler));
+                            GUI gui = GUI.of(builder, skipper);
                             clickHandler.put(1, 4, (__gui, _e) -> {
                                 skipper.add(InventoryCloseEvent.class);
                                 player.closeInventory();
                                 new ChatWizard(player).run(input -> {
                                     player.sendMessage("Your input: " + input);
-                                    gui.open();
+                                    gui.open(player);
                                 });
                                 player.sendMessage("Enter your input");
                             });
-                            gui.open();
+                            gui.open(player);
                         }, i);
                     }
-                    new GUI(player, new PaginationComponent(
+                    GUI.of(new PaginationComponent(
                             "JunLibrary Pagination GUI Demo", 3, items, handler
-                    )).open();
+                    )).open(player);
                 })
                 .build();
         Command<BukkitSource> itemSerialize = CommandBuilder.ofBukkit()
@@ -132,7 +172,7 @@ public class JunLibraryCommand {
                     }
                     String fileName = args.get("file-name", String.class)
                             .orElse("item");
-                    File file = new File(JunLibrary.getPlugin().getDataFolder(), "items/" + fileName + ".yml");
+                    File file = new File(JunLibrary.get().getDataFolder(), "items/" + fileName + ".yml");
                     try {
                         YamlConfiguration config = new YamlConfiguration();
                         config.set("item", item);
@@ -152,6 +192,6 @@ public class JunLibraryCommand {
                 .child(itemSerialize, "serialize")
                 .helper()
                 .build();
-        JunLibrary.getCommandManager().registerCommand(plugin, parent, "junlibrary", "junlib", "jl");
+        JunLibrary.get().getCommandManager().registerCommand(plugin, parent, "junlibrary", "junlib", "jl");
     }
 }

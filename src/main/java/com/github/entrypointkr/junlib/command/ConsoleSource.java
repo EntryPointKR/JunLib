@@ -25,4 +25,9 @@ public class ConsoleSource implements CommandSource {
     public boolean hasPermission(String permission) {
         return accessible;
     }
+
+    @Override
+    public boolean isOp() {
+        return true;
+    }
 }
