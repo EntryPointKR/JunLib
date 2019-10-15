@@ -1,29 +1,22 @@
 package com.github.entrypointkr.junlib.util;
 
 public class Cooldown {
-    private long coolMillis;
-    private long next = 0;
+    private long last = 0;
 
-    public Cooldown(long coolMillis) {
-        this.coolMillis = coolMillis;
-    }
-
-    public boolean action() {
+    public boolean action(long coolMillis) {
         if (coolMillis <= 0) {
             return true;
         }
-        if (next <= System.currentTimeMillis()) {
-            next = System.currentTimeMillis() + coolMillis;
+        long now = System.currentTimeMillis();
+        long diff = now - last;
+        if (diff >= coolMillis) {
+            last = now;
             return true;
         }
         return false;
     }
 
-    public long getCoolMillis() {
-        return coolMillis;
-    }
-
-    public void setCoolMillis(long coolMillis) {
-        this.coolMillis = coolMillis;
+    public long getLast() {
+        return last;
     }
 }
